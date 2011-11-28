@@ -28,7 +28,6 @@ public class TechniqueExecutorAllClasses extends TechniqueExecutor{
 			ArrayList[] elements = Extractor.extract(compilationUnit);
 			testClasses.add(elements); 
 		}
-		generateBagClass(testClasses);
 		FileGenerator.generateBagClass(testClasses, destinationFolder, outputPackage);
 //		elements[5] = applyTechnique(elements[5], priorizationTechinique);
 	}
