@@ -24,20 +24,20 @@ public class AncestorOrSelfAxisIteratorTest extends TestCase {
         iterator = new AncestorOrSelfAxisIterator(doc, new org.jaxen.dom.DocumentNavigator());
     }
 
-    public void testRemove() {
-        try {
-            iterator.remove();
-            fail("Removed from iterator");
-        } catch (UnsupportedOperationException ex) {
-        }
-    }
-
     public void testNoInfiniteLoops() {
         iterator.next();
         try {
             iterator.next();
             fail("Iterated twice");
         } catch (NoSuchElementException ex) {
+        }
+    }
+
+    public void testRemove() {
+        try {
+            iterator.remove();
+            fail("Removed from iterator");
+        } catch (UnsupportedOperationException ex) {
         }
     }
 }

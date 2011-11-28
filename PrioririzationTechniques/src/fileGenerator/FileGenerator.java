@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class FileGenerator {
@@ -86,10 +87,6 @@ public class FileGenerator {
 		
 		return auxCUnit;
 	}
-
-	private static void setcUnitTarget(CompilationUnit cUnitTarget) {
-		FileGenerator.cUnitTarget = cUnitTarget;
-	}
 	
 	private static void createTargetFile(String source, String destinationFolder, String nameFile) {
 		try {
@@ -110,7 +107,6 @@ public class FileGenerator {
 		
 	}
 	
-	//TODO estou extraindo devia ir pra Extractor
 	private static List<ClassOrInterfaceType> interfaceRealizations;
 	private static class ClassVisitor extends VoidVisitorAdapter {
 
@@ -130,17 +126,17 @@ public class FileGenerator {
 	}
 
 
+//------------- Generation of the Bag class -------------------------
 	public static void generateBagClass(ArrayList<ArrayList[]> testClasses,
 			String destinationFolder, String outputPackage) {
-		CompilationUnit bagCompUnit = createBagCompUnit(outputPackage);
-		for (ArrayList[] testCass : testClasses) {
-			addingBagElements(bagCompUnit, testCass);
-		}
-		createTargetFile(source.toString(), destinationFolder, compilationUnit.getTypes().get(0).getName());
+		
+		CompilationUnit bagType = createBagCompUnit(outputPackage, testClasses);
+		
+		createTargetFile(bagType.toString(), destinationFolder, "BagClass");
 		
 	}
 	
-	private static void addingBagElements(CompilationUnit bagCompUnit,
+	private static void addingBagElements(TypeDeclaration bagType,
 			ArrayList[] elements) {
 		ArrayList<Integer> modifiers = elements[0];
 		ArrayList<ImportDeclaration> imports = elements[1];
@@ -152,55 +148,81 @@ public class FileGenerator {
 		ArrayList<FieldDeclaration> fields = elements[7];
 		ArrayList<ClassOrInterfaceDeclaration> innerClasses = elements[8];
 		ArrayList<ConstructorDeclaration> constructors = elements[9];
-		
-		setBagImports(bagCompUnit, imports);
-		setBagMethods(bagCompUnit, setUpTearDownMethods, testMethods);
-		
-	}
 
-	private static void setBagMethods(CompilationUnit bagCompUnit,
-			ArrayList<MethodDeclaration> setUpTearDownMethods,
-			ArrayList<MethodDeclaration> testMethods) {
-		
 		for (MethodDeclaration setUpOrTearDown : setUpTearDownMethods) {
-			ASTHelper.addMember(bagCompUnit, setUpOrTearDown);
+			ASTHelper.addMember(bagType, setUpOrTearDown);
 		}
 		
 		for (MethodDeclaration testMethod : testMethods) {
-			ASTHelper.addMember(bagCompUnit, testMethod);
+			ASTHelper.addMember(bagType, testMethod);
 		}
+		
+		for (FieldDeclaration field : fields) {
+			ASTHelper.addMember(bagType, field);
+		}
+		
 	}
 
-	private static void setBagImports(CompilationUnit bagCompUnit, ArrayList<ImportDeclaration> imports) {
-		List<ImportDeclaration> bagImports = bagCompUnit.getImports();
-		List<ImportDeclaration> setImports = bagCompUnit.getImports();
-		for (ImportDeclaration importDeclaration : imports) {
-			if (!bagImports.contains(importDeclaration))
-				setImports.add(importDeclaration);
-		}
-		bagCompUnit.setImports(setImports);
-	}
+//	private static void setBagImports(CompilationUnit bagCompUnit, ArrayList<ImportDeclaration> imports) {
+//		List<ImportDeclaration> bagImports = bagCompUnit.getImports();
+//		List<ImportDeclaration> setImports = bagCompUnit.getImports();
+//		for (ImportDeclaration importDeclaration : imports) {
+//			if (!bagImports.contains(importDeclaration))
+//				setImports.add(importDeclaration);
+//		}
+//		bagCompUnit.setImports(setImports);
+//	}
 
-	private static CompilationUnit createBagCompUnit(String outputPackageName){
+	private static CompilationUnit createBagCompUnit(String outputPackageName, ArrayList<ArrayList[]> testClasses){
 		//create the target compination unit
 		CompilationUnit auxCUnit = new CompilationUnit();
-		
-		String name = "BagCLass";
+		String name = "BagClass";
 		int modifier = 1;
 				
-		//setting the package declaration and imports
+		//setting the package declaration
 		NameExpr namePack = new NameExpr(outputPackageName);
 		auxCUnit.setPackage(new PackageDeclaration(namePack));	
+		
+		//setting the imports declaration
+		HashSet<ImportDeclaration> importsSet = new HashSet<ImportDeclaration>();
+		for (ArrayList[] testCass : testClasses) {
+			ArrayList<ImportDeclaration> imports = testCass[1];
+			for (ImportDeclaration imp : imports) {
+				importsSet.add(imp);
+			}
+		}		
+		auxCUnit.setImports(translateToArrayList(importsSet.toArray()));
 
-		ArrayList<ClassOrInterfaceDeclaration> superclass = new ArrayList<ClassOrInterfaceDeclaration>();
-		ClassOrInterfaceDeclaration tc = new ClassOrInterfaceDeclaration();
+		//setting superclass
+		ArrayList<ClassOrInterfaceType> superclass = new ArrayList<ClassOrInterfaceType>();
+		ClassOrInterfaceType tc = new ClassOrInterfaceType();
 		tc.setName("TestCase");
 		superclass.add(tc);
-		
-		ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(null, modifier, null, false, name , null, (List)superclass, null, null);
+		List<ClassOrInterfaceType> superclassL = (List)superclass;
+				
+		ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(null, modifier, null, false, name , null, superclassL, null, null);
 		ASTHelper.addTypeDeclaration(auxCUnit, type);
 		
+		//setting methods
+		for (ArrayList[] testCass : testClasses) {
+			ArrayList<ClassOrInterfaceType> classSuper = testCass[2];
+			if ((classSuper.size() > 0 ) && (superclass.get(0).getName().equals("TestCase")))
+				addingBagElements (type, testCass);
+			else {
+				CompilationUnit newJavaFile = createTargetCompUnit(new CompilationUnit(), outputPackageName, testCass);
+				createTargetFile(newJavaFile.toString(), "src/testBag", (String) testCass[4].get(0));
+			}
+		}
+		
 		return auxCUnit;
+	}
+
+	private static List<ImportDeclaration> translateToArrayList(Object[] array) {
+		ArrayList<ImportDeclaration> returnArray = new ArrayList<ImportDeclaration>();
+		for (Object imp : array) {
+			returnArray.add((ImportDeclaration)imp);
+		}
+		return returnArray;
 	}
 
 }

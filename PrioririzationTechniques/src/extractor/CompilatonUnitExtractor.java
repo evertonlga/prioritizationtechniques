@@ -19,8 +19,9 @@ public class CompilatonUnitExtractor {
 		
 		ArrayList<CompilationUnit> cUnitsSource = new ArrayList<CompilationUnit>();
 		for (File file : files) {
-			try {
-				in = new FileInputStream(file);
+			if (file.getName().endsWith(".java")){
+				try {
+					in = new FileInputStream(file);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -36,6 +37,8 @@ public class CompilatonUnitExtractor {
 					e.printStackTrace();
 				}
 			}
+			}
+			
 		}
 		return cUnitsSource;
 	}
