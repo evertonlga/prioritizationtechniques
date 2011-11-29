@@ -58,7 +58,7 @@ import junit.framework.TestCase;
 
 public class AncestorOrSelfAxisIteratorTest extends TestCase {
 
-    private Iterator iterator;
+    private Iterator iterator_AncestorOrSelfAxisIteratorTest;
 
     public AncestorOrSelfAxisIteratorTest(String name) {
         super(name);
@@ -71,16 +71,16 @@ public class AncestorOrSelfAxisIteratorTest extends TestCase {
         Document doc = factory.newDocumentBuilder().newDocument();
         doc.appendChild(doc.createElement("root"));
         
-        iterator = new AncestorOrSelfAxisIterator(doc, new org.jaxen.dom.DocumentNavigator());
+        iterator_AncestorOrSelfAxisIteratorTest = new AncestorOrSelfAxisIterator(doc, new org.jaxen.dom.DocumentNavigator());
         
     }
     
     
     public void testNoInfiniteLoops() {
      
-        iterator.next();
+        iterator_AncestorOrSelfAxisIteratorTest.next();
         try {
-            iterator.next();
+            iterator_AncestorOrSelfAxisIteratorTest.next();
             fail("Iterated twice");   
         }
         catch (NoSuchElementException ex) {
@@ -92,7 +92,7 @@ public class AncestorOrSelfAxisIteratorTest extends TestCase {
     public void testRemove() {
         
         try {
-            iterator.remove();
+            iterator_AncestorOrSelfAxisIteratorTest.remove();
             fail("Removed from iterator");   
         }
         catch (UnsupportedOperationException ex) {
