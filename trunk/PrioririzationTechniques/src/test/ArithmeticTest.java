@@ -35,7 +35,7 @@ public class ArithmeticTest extends TestCase {
     public void testNumbersThatBeginWithADecimalPoint2() throws JaxenException {
         XPath xpath = new DOMXPath(".3 <= .4 <= 1.1");
         Boolean result = (Boolean) xpath.evaluate(doc);
-        assertTrue(result.booleanValue());
+        assertFalse(result.booleanValue());
     }
 
     public void testLeftAssociativityOfLessThanOrEqual() throws JaxenException {

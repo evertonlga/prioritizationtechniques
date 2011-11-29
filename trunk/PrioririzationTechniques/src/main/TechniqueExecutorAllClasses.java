@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import techniques.Random;
 import extractor.CompilatonUnitExtractor;
 import extractor.Extractor;
+import fileGenerator.FileBagGenerator;
 import fileGenerator.FileGenerator;
 
 public class TechniqueExecutorAllClasses extends TechniqueExecutor{
@@ -28,13 +29,8 @@ public class TechniqueExecutorAllClasses extends TechniqueExecutor{
 			ArrayList[] elements = Extractor.extract(compilationUnit);
 			testClasses.add(elements); 
 		}
-		FileGenerator.generateBagClass(testClasses, destinationFolder, outputPackage);
+		FileBagGenerator.generateBagClass(testClasses, destinationFolder, outputPackage);
 //		elements[5] = applyTechnique(elements[5], priorizationTechinique);
-	}
-
-	private static void generateBagClass(ArrayList<ArrayList[]> testClasses) {
-		
-		
 	}
 
 	private static ArrayList applyTechnique(ArrayList elements, String priorizationTechinique) {

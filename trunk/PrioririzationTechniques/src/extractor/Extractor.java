@@ -36,7 +36,7 @@ public class Extractor {
 	private static List<ClassOrInterfaceType> interfaceRealizations = new ArrayList<ClassOrInterfaceType>();
 	private static CompilationUnit compilationUnit;
 	
-	private static ArrayList<MethodDeclaration> getTestMethods() {
+	private static ArrayList<MethodDeclaration> getTestMethods(String className) {
 		List<TypeDeclaration> types = compilationUnit.getTypes();
 		ArrayList<MethodDeclaration> testMethods = new ArrayList<MethodDeclaration>();
 		for (TypeDeclaration type : types) {
@@ -44,8 +44,10 @@ public class Extractor {
 			for (BodyDeclaration member : members) {
 				if (member instanceof MethodDeclaration) {
 					MethodDeclaration method = (MethodDeclaration) member;
-					if (!method.getName().startsWith("setUp") && !method.getName().startsWith("tearDown"))
+					if (!method.getName().startsWith("setUp") && !method.getName().startsWith("tearDown")){
+						method.setName(method.getName()+"_"+className);
 						testMethods.add(method);
+					}
 				}
 			}
 		}
@@ -173,7 +175,7 @@ public class Extractor {
 		ArrayList<ClassOrInterfaceType> interfaces = new ArrayList<ClassOrInterfaceType>(extractInterfaces());
 		
 		
-		testMethods = getTestMethods();
+		testMethods = getTestMethods(names.get(0));
 		setUpTearDownMethods = getSetUpTearDownMethods();
 		fields = getFields();
 		innerClasses = getInnerClasses();

@@ -2,6 +2,13 @@ package util;
 
 public class APFD {
 
+	/**
+	 * 
+	 * @param numberOfTestCases
+	 * @param numberOfFaults 
+	 * @param firstsRevealingIndexes firstsRevealingIndexes[i] is position of the first test case which revealed the fault i  
+	 * @return
+	 */
 	public static double getAPFD(int numberOfTestCases, int numberOfFaults, int[] firstsRevealingIndexes){
 		int sumOfIndexes = 0;
 		for (int i : firstsRevealingIndexes) {
