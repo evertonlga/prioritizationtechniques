@@ -37,13 +37,15 @@ public class Main {
 //		TechniqueExecutorByClass te = new TechniqueExecutorByClass();
 //		te.executor(nameFolder, destinationFolder, outputPackage, priorizationTechinique);
 		
-		String nameFolder = "JaxenTests";
-//		String nameFolder = "files";
+//		String nameFolder = "JaxenTests";
+		String nameFolder = "files";
 		String destinationFolder = "src/test";
 		String outputPackage = "test";
 		String priorizationTechinique = "Random";
-		String destinationFolderBag = "src/testBag";
-		String outputPackageBag = "testBag";
+//		String destinationFolderBag = "src/testBag";
+		String destinationFolderBag = "src/testBag2";
+//		String outputPackageBag = "testBag";
+		String outputPackageBag = "testBag2";
 		TechniqueExecutorAllClasses te2 = new TechniqueExecutorAllClasses();
 		te2.executor(nameFolder, destinationFolderBag, outputPackageBag, priorizationTechinique);
 		

@@ -402,7 +402,7 @@ public class DOMXPathTest extends TestCase
         root.appendChild(a);
         Element b = doc_DOMXPathTest.createElement("b");
         root.appendChild(b);
-        Element c = doc.createElement("c");
+        Element c = doc_DOMXPathTest.createElement("c");
         a.appendChild(c);
         
         List result = xpath.selectNodes(b);

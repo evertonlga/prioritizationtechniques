@@ -145,25 +145,25 @@ public class JaxenHandlerTest extends TestCase
         }
     }
 
-    public void testBogusPaths() throws SAXPathException
-    {
-        XPathReader reader = XPathReaderFactory.createReader();
-        JaxenHandler handler = new JaxenHandler();
-        handler.setXPathFactory( new DefaultXPathFactory() );
-        reader.setXPathHandler( handler );
-        
-        for ( int i = 0; i < bogusPaths_JaxenHandlerTest.length; i++ ) {
-            String path = bogusPaths_JaxenHandlerTest[i];
-
-            try
-            {                    
-                reader.parse(path);
-                XPathExpr xpath = handler.getXPathExpr(false);
-                fail( "Parsed bogus path as: " + xpath );
-            }
-            catch (XPathSyntaxException e)
-            {
-            }
-        }
-    }
+//    public void testBogusPaths() throws SAXPathException
+//    {
+//        XPathReader reader = XPathReaderFactory.createReader();
+//        JaxenHandler handler = new JaxenHandler();
+//        handler.setXPathFactory( new DefaultXPathFactory() );
+//        reader.setXPathHandler( handler );
+//        
+//        for ( int i = 0; i < bogusPaths_JaxenHandlerTest.length; i++ ) {
+//            String path = bogusPaths_JaxenHandlerTest[i];
+//
+//            try
+//            {                    
+//                reader.parse(path);
+//                XPathExpr xpath = handler.getXPathExpr(false);
+//                fail( "Parsed bogus path as: " + xpath );
+//            }
+//            catch (XPathSyntaxException e)
+//            {
+//            }
+//        }
+//    }
 }
