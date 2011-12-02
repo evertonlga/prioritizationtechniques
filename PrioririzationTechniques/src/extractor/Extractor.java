@@ -1,33 +1,18 @@
 package extractor;
 
-import japa.parser.ASTHelper;
-import japa.parser.JavaParser;
-import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.ConstructorDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.body.TypeDeclaration;
-import japa.parser.ast.expr.NameExpr;
-import japa.parser.ast.expr.SuperExpr;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 public class Extractor {
@@ -154,14 +139,12 @@ public class Extractor {
 	}
 	
 	public static ArrayList[] extract(CompilationUnit compilationUnit){
-		//getCompUnitsSource (nameFolder);
-		
 		ArrayList<MethodDeclaration> testMethods = new ArrayList<MethodDeclaration>();
 		ArrayList<MethodDeclaration> setUpTearDownMethods = new ArrayList<MethodDeclaration>();
 		ArrayList<FieldDeclaration> fields = new ArrayList<FieldDeclaration>();
 		ArrayList<Integer> modifier;
 		ArrayList<ImportDeclaration> imports;
-		//ArrayList<ClassOrInterfaceType> superClass = new ArrayList<ClassOrInterfaceType>();
+		
 		ArrayList<String> names;
 		ArrayList<ClassOrInterfaceDeclaration> innerClasses = new ArrayList<ClassOrInterfaceDeclaration>();
 		ArrayList<ConstructorDeclaration> constructors = new ArrayList<ConstructorDeclaration>();
@@ -202,19 +185,5 @@ public class Extractor {
         	else superclass = null;
         }
     }
-
-//	public static void main(String[] args) throws ParseException, IOException {		
-//		
-//		for (CompilationUnit cUnit : cUnitsSource) {
-//			ArrayList<MethodDeclaration> testMethods = getTestMethods(cUnit);
-//			ArrayList<MethodDeclaration> setUpTearDownMethods = getSetUpTearDownMethods(cUnit);
-//			ArrayList<FieldDeclaration> fields = getFields(cUnit);	
-//			createTargetCompUnit(cUnit, outputPackage, testMethods, setUpTearDownMethods, fields);
-//			createTargetFile(cUnitTarget.toString(), destinationFolder, cUnit.getTypes().get(0).getName());
-//		}
-//		
-//		System.out.println(r.cUnitTarget);
-//	}
-
 
 }
