@@ -3,7 +3,8 @@ package testBag;
 import java.net.URL;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXReader; 
+//import org.jaxen.dom4j.Dom4jXPath;
 import org.jaxen.dom4j.Dom4jXPath;
 
 class DOM4JPerformance {
