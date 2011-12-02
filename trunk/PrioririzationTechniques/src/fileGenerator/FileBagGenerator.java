@@ -55,11 +55,9 @@ public class FileBagGenerator extends FileGenerator{
 				tearDownStatements.addAll(setUpOrTearDown.getBody().getStmts());
 				exceptionsTearDown = setUpOrTearDown.getThrows();
 			}
-//			ASTHelper.addMember(bagType, setUpOrTearDown);
 		}
 		
 		for (MethodDeclaration testMethod : testMethods) {
-//			System.out.println(testMethod.getModifiers());
 			if ((setUpStatements.size() > 0 || tearDownStatements.size() > 0)  && testMethod.getModifiers() != 1028){
 				List<Statement> bodySt = testMethod.getBody().getStmts();			
 				List<Statement> testMethodStat = new ArrayList<Statement>();
@@ -94,16 +92,6 @@ public class FileBagGenerator extends FileGenerator{
 		}
 		return returnState;
 	}
-
-//	private static void setBagImports(CompilationUnit bagCompUnit, ArrayList<ImportDeclaration> imports) {
-//		List<ImportDeclaration> bagImports = bagCompUnit.getImports();
-//		List<ImportDeclaration> setImports = bagCompUnit.getImports();
-//		for (ImportDeclaration importDeclaration : imports) {
-//			if (!bagImports.contains(importDeclaration))
-//				setImports.add(importDeclaration);
-//		}
-//		bagCompUnit.setImports(setImports);
-//	}
 
 	private static CompilationUnit createBagCompUnit(String outputPackageName, ArrayList<ArrayList[]> testClasses){
 		//create the target compination unit
@@ -172,10 +160,6 @@ public class FileBagGenerator extends FileGenerator{
 		while (notFound && index < fieldSet.size()){
 			FieldDeclaration field = fieldSet.get(index);
 			if (field.getVariables().get(0).equals(fieldDeclaration.getVariables().get(0))){
-//					||
-//					field.getType().toString().equals(fieldDeclaration.getType().toString()) && 
-//					) || 
-//					(field.getType().toString().equals(sub)) && field.getVariables().get(0).equals(fieldDeclaration.getVariables().get(0)){
 				notFound = false;
 			}else index++;
 		}
@@ -187,11 +171,6 @@ public class FileBagGenerator extends FileGenerator{
 
 	private static void settingFields(ClassOrInterfaceDeclaration type,
 			ArrayList<FieldDeclaration> fieldSet) {
-		//		for (String key : fieldSet.keySet()) {
-		//			ASTHelper.addMember(type, fieldSet.get(key));
-		//		}
-
-		//		fieldSet.keySet()
 		for (FieldDeclaration field : fieldSet) {
 			ASTHelper.addMember(type, field);
 		}
@@ -205,6 +184,4 @@ public class FileBagGenerator extends FileGenerator{
 		}
 		return returnArray;
 	}
-
-
 }

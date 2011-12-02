@@ -120,12 +120,7 @@ public class FileGenerator {
     }
 	
 	public static void generateTestClasses(CompilationUnit compilationUnit, ArrayList[] elements, String destinationFolder, String outputPackage){
-		//String source, String destinationFolder, String nameFile
 		CompilationUnit source = createTargetCompUnit(compilationUnit, outputPackage, elements);
 		createTargetFile(source.toString(), destinationFolder, compilationUnit.getTypes().get(0).getName());
 	}
-
-
-//------------- Generation of the Bag class -------------------------
-	
 }
