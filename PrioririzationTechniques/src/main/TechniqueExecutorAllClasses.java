@@ -30,19 +30,6 @@ public class TechniqueExecutorAllClasses extends TechniqueExecutor{
 			testClasses.add(elements); 
 		}
 		FileBagGenerator.generateBagClass(testClasses, destinationFolder, outputPackage);
-//		elements[5] = applyTechnique(elements[5], priorizationTechinique);
 	}
 
-	private static ArrayList applyTechnique(ArrayList elements, String priorizationTechinique) {
-		if (priorizationTechinique.equals("Random")){
-			return Random.applyRandom(elements);
-		}
-		return null;
-	}
-
-	private static void createOutputFolder(String destinationFolder) {
-		boolean success = (new File(destinationFolder)).mkdirs(); 
-		if (success)
-			System.out.println("CRIOU");
-	}
 }

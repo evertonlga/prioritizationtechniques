@@ -1,14 +1,6 @@
 package main;
 
-import japa.parser.ast.CompilationUnit;
-
 import java.io.File;
-import java.util.ArrayList;
-
-import techniques.Random;
-import extractor.CompilatonUnitExtractor;
-import extractor.Extractor;
-import fileGenerator.FileGenerator;
 
 public abstract class TechniqueExecutor {
 	
@@ -16,29 +8,7 @@ public abstract class TechniqueExecutor {
 			String outputPackage, String priorizationTechinique) {
 		
 		createOutputFolder(destinationFolder);
-		
-//		execution(nameFolder, destinationFolder, outputPackage,
-//					priorizationTechinique);
-		
 	}
-
-//	private abstract void execution(String nameFolder,
-//			String destinationFolder, String outputPackage,
-//			String priorizationTechinique) {
-//		ArrayList<CompilationUnit> compUnits = new CompilatonUnitExtractor().getCompUnitsSource(nameFolder);
-//		for (CompilationUnit compilationUnit : compUnits) {			
-//			ArrayList[] elements = Extractor.extract(compilationUnit);
-//			elements[5] = applyTechnique(elements[5], priorizationTechinique);
-//			FileGenerator.generateTestClasses(compilationUnit, elements, destinationFolder, outputPackage);
-//		}
-//	}
-//
-//	private static ArrayList applyTechnique(ArrayList elements, String priorizationTechinique) {
-//		if (priorizationTechinique.equals("Random")){
-//			return Random.applyRandom(elements);
-//		}
-//		return null;
-//	}
 
 	private static void createOutputFolder(String destinationFolder) {
 		boolean success = (new File(destinationFolder)).mkdirs(); 
