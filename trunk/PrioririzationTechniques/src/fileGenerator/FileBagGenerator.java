@@ -60,7 +60,7 @@ public class FileBagGenerator extends FileGenerator{
 		
 		for (MethodDeclaration testMethod : testMethods) {
 //			System.out.println(testMethod.getModifiers());
-			if (setUpStatements.size() > 0 && testMethod.getModifiers() != 1028){
+			if ((setUpStatements.size() > 0 || tearDownStatements.size() > 0)  && testMethod.getModifiers() != 1028){
 				List<Statement> bodySt = testMethod.getBody().getStmts();			
 				List<Statement> testMethodStat = new ArrayList<Statement>();
 				List<Statement> setUpCopy = copy(setUpStatements);
@@ -82,8 +82,7 @@ public class FileBagGenerator extends FileGenerator{
 					newListThrows.addAll(exceptionsTearDown);
 				if (newListThrows != null && newListThrows.size() > 0)
 					testMethod.setThrows(newListThrows);
-			}
-			
+			}			
 			ASTHelper.addMember(bagType, testMethod);
 		}		
 	}

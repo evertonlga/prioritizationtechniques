@@ -4,14 +4,13 @@ import org.jaxen.pattern.Pattern;
 import org.jaxen.util.FollowingAxisIterator;
 import org.dom4j.DocumentHelper;
 import org.jaxen.FunctionContext;
-import org.dom4j.Namespace;
-//import org.jdom.Namespace;
+//import org.dom4j.Namespace;
+import org.jdom.Namespace;
 import org.jaxen.UnresolvableException;
 import org.jdom.input.SAXBuilder;
 import java.util.List;
 import java.io.FileInputStream;
 import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.FlyweightAttribute;
 import org.jaxen.JaxenHandler;
 import org.jaxen.dom4j.Dom4jXPath;
 import java.io.StringReader;
@@ -19,7 +18,7 @@ import org.jaxen.dom.DocumentNavigator;
 import org.dom4j.DocumentException;
 import org.jaxen.function.NumberFunction;
 import org.jaxen.XPath;
-import org.w3c.dom.Text;
+//import org.w3c.dom.Text;
 import org.jaxen.UnsupportedAxisException;
 import org.jaxen.saxpath.XPathReader;
 //import org.jaxen.saxpath.base.XPathReader;
@@ -36,7 +35,7 @@ import org.jaxen.FunctionCallException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 //import org.jaxen.xom.DocumentNavigator;
-import nu.xom.Element;
+//import nu.xom.Element;
 import java.io.ObjectInputStream;
 import org.w3c.dom.Node;
 import org.jaxen.JaxenException;
@@ -50,7 +49,7 @@ import org.jaxen.dom.*;
 import org.jaxen.expr.DefaultXPathFactory;
 import org.jaxen.saxpath.Axis;
 import org.dom4j.tree.DefaultElement;
-import nu.xom.Document;
+//import nu.xom.Document;
 import java.io.StringWriter;
 import org.jaxen.pattern.PatternParser;
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,7 +58,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
 import org.jaxen.dom.DOMXPath;
 import org.jaxen.util.FollowingSiblingAxisIterator;
-//import org.jdom.Text;
+import org.jdom.Text;
 import org.jaxen.util.PrecedingSiblingAxisIterator;
 import org.dom4j.tree.DefaultDocument;
 import org.jaxen.dom.NamespaceNode;
@@ -69,16 +68,16 @@ import org.jaxen.util.DescendantAxisIterator;
 import java.io.InputStream;
 import org.jaxen.*;
 import java.util.NoSuchElementException;
-//import org.w3c.dom.Element;
+import org.w3c.dom.Element;
 import org.jaxen.ContextSupport;
-import org.jaxen.saxpath.XPathSyntaxException;
+//import org.jaxen.saxpath.XPathSyntaxException;
 //import org.jaxen.dom4j.DocumentNavigator;
 import org.jaxen.Context;
 import org.jaxen.saxpath.SAXPathException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
-//import org.jaxen.XPathSyntaxException;
+import org.jaxen.XPathSyntaxException;
 import org.w3c.dom.ProcessingInstruction;
 import org.jaxen.saxpath.helpers.XPathReaderFactory;
 import org.jaxen.util.AncestorOrSelfAxisIterator;
@@ -87,7 +86,7 @@ import org.jdom.JDOMException;
 import junit.framework.Test;
 //import org.dom4j.Element;
 import java.util.HashMap;
-//import org.jdom.Document;
+import org.jdom.Document;
 //import org.w3c.dom.Document;
 import org.jaxen.function.StringFunction;
 import org.jaxen.expr.iter.IterableAxis;
@@ -109,6 +108,7 @@ import org.jaxen.NamespaceContext;
 //import org.dom4j.Document;
 import org.w3c.dom.Attr;
 //import org.jdom.Element;
+import testBag.*;
 
 public class BagClass extends TestCase {
 
@@ -220,20 +220,28 @@ public class BagClass extends TestCase {
 
     private org.w3c.dom.Document doc_StringLengthTest;
 
+    private org.w3c.dom.Document doc_TranslateFunctionTest;
+
     private Builder builder_XOMNavigatorTest = new Builder();
 
     private static final String BASIC_XML_XOMXPathTest = "xml/basic.xml";
 
-    private ConformanceXPathHandler actual_ConformanceXPathHandler;
+    private ConformanceXPathHandler actual_XPathReaderTest;
 
     private org.w3c.dom.Document doc_XPathReaderTest;
 
-    private XPathReader reader_XPathReaderTest;
+    private org.jaxen.saxpath.base.XPathReader reader_XPathReaderTest;
+
+    private String[] paths_XPathReaderTest = { "/foo/bar[@a='1' and @b='2']", "/foo/bar[@a='1' and @b!='2']", "$varname[@a='1']", "//attribute::*[.!='crunchy']", "'//*[contains(string(text()),\"yada yada\")]'" };
+
+    private String[][] bogusPaths_XPathReaderTest = { new String[] { "chyld::foo", "Expected valid axis name instead of [chyld]" }, new String[] { "foo/tacos()", "Expected node-type" }, new String[] { "foo/tacos()", "Expected node-type" }, new String[] { "*:foo", "Unexpected ':'" }, new String[] { "/foo/bar[baz", "Expected: ]" }, new String[] { "/cracker/cheese[(mold > 1) and (sense/taste", "Expected: )" }, new String[] { "//", "Location path cannot end with //" }, new String[] { "foo/$variable/foo", "Expected one of '.', '..', '@', '*', <QName>" } };
+
 
     private String[] paths = { "/foo/bar[@a='1' and @b='2']", "/foo/bar[@a='1' and @b!='2']", "$varname[@a='1']", "//attribute::*[.!='crunchy']", "'//*[contains(string(text()),\"yada yada\")]'" };
 
-    private String[][] bogusPaths = { new String[] { "chyld::foo", "Expected valid axis name instead of [chyld]" }, new String[] { "foo/tacos()", "Expected node-type" }, new String[] { "foo/tacos()", "Expected node-type" }, new String[] { "*:foo", "Unexpected ':'" }, new String[] { "/foo/bar[baz", "Expected: ]" }, new String[] { "/cracker/cheese[(mold > 1) and (sense/taste", "Expected: )" }, new String[] { "//", "Location path cannot end with //" }, new String[] { "foo/$variable/foo", "Expected one of '.', '..', '@', '*', <QName>" } };
-
+    private String[] bogusPaths = {"//:p", "/foo/bar/", "12 + sum(count(//author),count(//author/attribute::*)) / 2", "id()/2", "+" };
+//    private String[] bogusPaths_JaxenHandlerTest = { "//:p", "/foo/bar/", "12 + sum(count(//author),count(//author/attribute::*)) / 2", "id()/2", "+" };
+    
     public void testDefaultContext_AddNamespaceTest() throws SAXPathException {
         XPath xpath = new DOMXPath("foo");
         xpath.addNamespace("cheese", "http://cheese.org");
@@ -382,9 +390,9 @@ public class BagClass extends TestCase {
         doc_BaseXPathTest = factory.newDocumentBuilder().newDocument();
         builder = factory.newDocumentBuilder();
         BaseXPath xpath = new DOMXPath("(/root)/child");
-        org.w3c.dom.Element root = doc_BaseXPathTest.createElement("root");
+        Element root = doc_BaseXPathTest.createElement("root");
         doc_BaseXPathTest.appendChild(root);
-        org.w3c.dom.Element child = doc_BaseXPathTest.createElement("child");
+        Element child = doc_BaseXPathTest.createElement("child");
         root.appendChild(child);
         assertEquals(child, xpath.selectSingleNode(doc_BaseXPathTest));
     }
@@ -1355,7 +1363,7 @@ public class BagClass extends TestCase {
         org.w3c.dom.Element root = doc_BaseXPathTest.createElement("root");
         doc_BaseXPathTest.appendChild(root);
         root.setAttribute("name", "value");
-        org.w3c.dom.Element child = doc_BaseXPathTest.createElementNS("http://www.example.org", "pre:child");
+        Element child = doc_BaseXPathTest.createElementNS("http://www.example.org", "pre:child");
         root.appendChild(child);
         XPath xpath = new DOMXPath("/*/*/namespace::node() | //attribute::* ");
         List result = xpath.selectNodes(doc_BaseXPathTest);
@@ -1371,7 +1379,7 @@ public class BagClass extends TestCase {
         builder = factory.newDocumentBuilder();
         org.w3c.dom.Element a = doc_BaseXPathTest.createElementNS("http://www.a.com/", "a:foo");
         doc_BaseXPathTest.appendChild(a);
-        org.w3c.dom.Element b = doc_BaseXPathTest.createElementNS("http://www.b.com/", "b:bar");
+        Element b = doc_BaseXPathTest.createElementNS("http://www.b.com/", "b:bar");
         a.appendChild(b);
         XPath xpath = new DOMXPath("/a:foo/b:bar/namespace::*/parent::*");
         SimpleNamespaceContext context1 = new SimpleNamespaceContext();
@@ -1411,7 +1419,7 @@ public class BagClass extends TestCase {
         builder = factory.newDocumentBuilder();
         org.w3c.dom.Element a = doc_BaseXPathTest.createElementNS("http://www.a.com/", "a:foo");
         doc_BaseXPathTest.appendChild(a);
-        Text b = doc_BaseXPathTest.createTextNode("ready");
+        org.w3c.dom.Text b = doc_BaseXPathTest.createTextNode("ready");
         a.appendChild(b);
         XPath xpath = new DOMXPath("..");
         List result = (List) xpath.evaluate(b);
@@ -1426,7 +1434,7 @@ public class BagClass extends TestCase {
         builder = factory.newDocumentBuilder();
         org.w3c.dom.Element a = doc_BaseXPathTest.createElementNS("http://www.a.com/", "a:foo");
         doc_BaseXPathTest.appendChild(a);
-        Text b = doc_BaseXPathTest.createTextNode("ready");
+        org.w3c.dom.Text b = doc_BaseXPathTest.createTextNode("ready");
         a.appendChild(b);
         XPath xpath = new DOMXPath("..");
         try {
@@ -1883,7 +1891,7 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         org.w3c.dom.Document doc = builder.parse("xml/basic.xml");
-        org.w3c.dom.Element root = doc.getDocumentElement();
+        Element root = doc.getDocumentElement();
         root.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "en");
         XPath xpath = new DOMXPath("/*/@xml:lang");
         List result = xpath.selectNodes(doc);
@@ -1994,11 +2002,11 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         org.w3c.dom.Document doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
-        org.w3c.dom.Element child1 = doc.createElement("child1");
-        org.w3c.dom.Element child2 = doc.createElement("child2");
-        org.w3c.dom.Element grandchild1 = doc.createElement("grandchild1");
-        org.w3c.dom.Element grandchild2 = doc.createElement("grandchild2");
+        Element root = doc.createElement("root");
+        Element child1 = doc.createElement("child1");
+        Element child2 = doc.createElement("child2");
+        Element grandchild1 = doc.createElement("grandchild1");
+        Element grandchild2 = doc.createElement("grandchild2");
         root.appendChild(child1);
         root.appendChild(child2);
         child1.appendChild(grandchild1);
@@ -2206,9 +2214,9 @@ public class BagClass extends TestCase {
         List results = xpath.selectNodes(doc);
         assertEquals(3, results.size());
         Iterator iter = results.iterator();
-        assertEquals("baz", ((DefaultElement) iter.next()).getName());
-        assertEquals("baz", ((DefaultElement) iter.next()).getName());
-        assertEquals("baz", ((DefaultElement) iter.next()).getName());
+        assertEquals("baz", ((org.dom4j.Element) iter.next()).getName());
+        assertEquals("baz", ((org.dom4j.Element) iter.next()).getName());
+        assertEquals("baz", ((org.dom4j.Element) iter.next()).getName());
         assertTrue(!iter.hasNext());
     }
 
@@ -2226,8 +2234,8 @@ public class BagClass extends TestCase {
 
     public void testJaxen20AttributeNamespaceNodes_DOM4JXPathTest() throws JaxenException {
         System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
-        Namespace ns1 = Namespace.get("p1", "www.acme1.org");
-        Namespace ns2 = Namespace.get("p2", "www.acme2.org");
+        org.dom4j.Namespace ns1 = org.dom4j.Namespace.get("p1", "www.acme1.org");
+        org.dom4j.Namespace ns2 = org.dom4j.Namespace.get("p2", "www.acme2.org");
         DefaultElement element = new DefaultElement("test", ns1);
         DefaultAttribute attribute = new DefaultAttribute("pre:foo", "bar", ns2);
         element.add(attribute);
@@ -2249,9 +2257,9 @@ public class BagClass extends TestCase {
 
     public void testNamespaceNodesAreInherited_DOM4JXPathTest() throws JaxenException {
         System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
-        Namespace ns0 = Namespace.get("p0", "www.acme0.org");
-        Namespace ns1 = Namespace.get("p1", "www.acme1.org");
-        Namespace ns2 = Namespace.get("p2", "www.acme2.org");
+        org.dom4j.Namespace ns0 = org.dom4j.Namespace.get("p0", "www.acme0.org");
+        org.dom4j.Namespace ns1 = org.dom4j.Namespace.get("p1", "www.acme1.org");
+        org.dom4j.Namespace ns2 = org.dom4j.Namespace.get("p2", "www.acme2.org");
         DefaultElement element = new DefaultElement("test", ns1);
         DefaultAttribute attribute = new DefaultAttribute("pre:foo", "bar", ns2);
         element.add(attribute);
@@ -2269,8 +2277,7 @@ public class BagClass extends TestCase {
         try {
             new Dom4jXPath(path);
             fail("Allowed union of non-node-sets");
-        }
-        catch (org.jaxen.XPathSyntaxException success) {
+        } catch (XPathSyntaxException success) {
             assertNotNull(success.getMessage());
         }
     }
@@ -2298,7 +2305,7 @@ public class BagClass extends TestCase {
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
         Navigator nav = getNavigator_DOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
-        org.w3c.dom.Element a = doc.createElement("a");
+        Element a = doc.createElement("a");
         String qname = nav.getAttributeQName(a);
         assertNull(qname);
     }
@@ -2308,7 +2315,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
         Attr a = doc.createAttribute("a");
         String qname = nav.getElementQName(a);
@@ -2320,9 +2327,9 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
-        org.w3c.dom.Element a = doc.createElementNS("http://www.ex.com", "pre:a");
+        Element a = doc.createElementNS("http://www.ex.com", "pre:a");
         String name = nav.getAttributeName(a);
         assertNull(name);
     }
@@ -2332,7 +2339,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
         Attr a = doc.createAttributeNS("http://www.ex.com", "a");
         String name = nav.getElementName(a);
@@ -2344,9 +2351,9 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
-        org.w3c.dom.Element a = doc.createElementNS("http://www.example.org/", "a");
+        Element a = doc.createElementNS("http://www.example.org/", "a");
         String qname = nav.getAttributeNamespaceUri(a);
         assertNull(qname);
     }
@@ -2356,7 +2363,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
         Attr a = doc.createAttributeNS("http://www.element.org/", "a");
         String qname = nav.getElementNamespaceUri(a);
@@ -2368,7 +2375,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
         Attr a = doc.createAttributeNS("http://www.element.org/", "a");
         try {
@@ -2384,7 +2391,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         builder_DOMNavigatorTest = factory.newDocumentBuilder();
-        Navigator nav = getNavigator_DOMNavigatorTest();
+        Navigator nav = getNavigator_JDOMNavigatorTest();
         org.w3c.dom.Document doc = builder_DOMNavigatorTest.newDocument();
         Attr a = doc.createAttributeNS("http://www.element.org/", "a");
         try {
@@ -2431,7 +2438,7 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_DOMXPathTest.createElementNS("http://www.example.org/", "root");
         doc_DOMXPathTest.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("count(/*/@*)");
@@ -2443,9 +2450,9 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElement("root");
+        Element root = doc_DOMXPathTest.createElement("root");
         doc_DOMXPathTest.appendChild(root);
-        org.w3c.dom.Element child = doc_DOMXPathTest.createElementNS("http://www.example.org", "foo:child");
+        Element child = doc_DOMXPathTest.createElementNS("http://www.example.org", "foo:child");
         root.appendChild(child);
         child.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo2", "http://www.contradictory.org");
         XPath xpath = new DOMXPath("//namespace::node()");
@@ -2457,9 +2464,9 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElement("root");
+        Element root = doc_DOMXPathTest.createElement("root");
         doc_DOMXPathTest.appendChild(root);
-        org.w3c.dom.Element child = doc_DOMXPathTest.createElementNS("http://www.example.org", "foo:child");
+        Element child = doc_DOMXPathTest.createElementNS("http://www.example.org", "foo:child");
         root.appendChild(child);
         child.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo", "http://www.contradictory.org");
         XPath xpath = new DOMXPath("//namespace::node()");
@@ -2471,9 +2478,9 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElement("root");
+        Element root = doc_DOMXPathTest.createElement("root");
         doc_DOMXPathTest.appendChild(root);
-        org.w3c.dom.Element child = doc_DOMXPathTest.createElementNS("http://www.example.org", "foo:child");
+        Element child = doc_DOMXPathTest.createElementNS("http://www.example.org", "foo:child");
         root.appendChild(child);
         child.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo", "http://www.contradictory.org");
         XPath xpath = new DOMXPath("//namespace::node()[name(.)='foo']");
@@ -2487,7 +2494,7 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElement("root");
+        Element root = doc_DOMXPathTest.createElement("root");
         doc_DOMXPathTest.appendChild(root);
         root.setAttributeNS("http://www.example.org/", "foo:a", "value");
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo", "http://www.contradictory.org");
@@ -2502,7 +2509,7 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElementNS("http://www.example.org", "pre:root");
+        Element root = doc_DOMXPathTest.createElementNS("http://www.example.org", "pre:root");
         doc_DOMXPathTest.appendChild(root);
         root.setAttributeNS("http://www.contradictory.org", "pre:foo", "value");
         XPath xpath = new DOMXPath("//namespace::node()[name(.)='pre']");
@@ -2516,7 +2523,7 @@ public class BagClass extends TestCase {
         factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
         factory_DOMXPathTest.setNamespaceAware(true);
         doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_DOMXPathTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_DOMXPathTest.createElementNS("http://www.example.org/", "root");
         doc_DOMXPathTest.appendChild(root);
         root.appendChild(doc_DOMXPathTest.createComment("data"));
         DOMXPath xpath = new DOMXPath("//comment()");
@@ -2536,9 +2543,9 @@ public class BagClass extends TestCase {
         List results = xpath.selectNodes(document);
         assertEquals(3, results.size());
         Iterator iter = results.iterator();
-        assertEquals("baz", ((org.w3c.dom.Element) iter.next()).getLocalName());
-        assertEquals("baz", ((org.w3c.dom.Element) iter.next()).getLocalName());
-        assertEquals("baz", ((org.w3c.dom.Element) iter.next()).getLocalName());
+        assertEquals("baz", ((Element) iter.next()).getLocalName());
+        assertEquals("baz", ((Element) iter.next()).getLocalName());
+        assertEquals("baz", ((Element) iter.next()).getLocalName());
         assertTrue(!iter.hasNext());
     }
 
@@ -2616,35 +2623,35 @@ public class BagClass extends TestCase {
         assertEquals(1, result.size());
     }
 
-//    public void testPrecedingAxisInDocumentOrder_DOMXPathTest() throws JaxenException, ParserConfigurationException {
-//        factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
-//        factory_DOMXPathTest.setNamespaceAware(true);
-//        doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
-//        XPath xpath = new DOMXPath("preceding::*");
-//        org.w3c.dom.Element root = doc_DOMXPathTest.createElement("root");
-//        doc_DOMXPathTest.appendChild(root);
-//        org.w3c.dom.Element a = doc_DOMXPathTest.createElement("a");
-//        root.appendChild(a);
-//        org.w3c.dom.Element b = doc_DOMXPathTest.createElement("b");
-//        root.appendChild(b);
-//        org.w3c.dom.Element c = doc.createElement("c");
-//        a.appendChild(c);
-//        List result = xpath.selectNodes(b);
-//        assertEquals(2, result.size());
-//        assertEquals(a, result.get(0));
-//        assertEquals(c, result.get(1));
-//    }
+    public void testPrecedingAxisInDocumentOrder_DOMXPathTest() throws JaxenException, ParserConfigurationException {
+        factory_DOMXPathTest = DocumentBuilderFactory.newInstance();
+        factory_DOMXPathTest.setNamespaceAware(true);
+        doc_DOMXPathTest = factory_DOMXPathTest.newDocumentBuilder().newDocument();
+        XPath xpath = new DOMXPath("preceding::*");
+        Element root = doc_DOMXPathTest.createElement("root");
+        doc_DOMXPathTest.appendChild(root);
+        Element a = doc_DOMXPathTest.createElement("a");
+        root.appendChild(a);
+        Element b = doc_DOMXPathTest.createElement("b");
+        root.appendChild(b);
+        Element c = doc_DOMXPathTest.createElement("c");
+        a.appendChild(c);
+        List result = xpath.selectNodes(b);
+        assertEquals(2, result.size());
+        assertEquals(a, result.get(0));
+        assertEquals(c, result.get(1));
+    }
 
     public void testEqualityAgainstNonExistentNodes_EqualsTest() throws JaxenException, ParserConfigurationException {
         DOMXPath xpath = new DOMXPath("/a/b[c = ../d]");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         org.w3c.dom.Document doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("a");
+        Element root = doc.createElement("a");
         doc.appendChild(root);
-        org.w3c.dom.Element b = doc.createElement("b");
+        Element b = doc.createElement("b");
         root.appendChild(b);
-        org.w3c.dom.Element c = doc.createElement("c");
+        Element c = doc.createElement("c");
         b.appendChild(c);
         List result = (List) xpath.evaluate(doc);
         assertEquals(0, result.size());
@@ -2661,7 +2668,7 @@ public class BagClass extends TestCase {
         List result = (List) xpath.evaluate(doc);
         assertEquals(1, result.size());
     }
-
+    
     class MinFunction implements Function {
 
         public Object call(Context context, List args) {
@@ -2679,7 +2686,7 @@ public class BagClass extends TestCase {
         }
         
     }
-    
+
     public void testRegisterExtensionFunction_ExtensionFunctionTest() throws JaxenException, ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -2927,7 +2934,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc_FunctionContextTest = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
         doc_FunctionContextTest.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("true()");
@@ -2942,7 +2949,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc_FunctionContextTest = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
         doc_FunctionContextTest.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("nonesuch()");
@@ -2958,7 +2965,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc_FunctionContextTest = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
         doc_FunctionContextTest.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("nonesuch()");
@@ -2974,7 +2981,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc_FunctionContextTest = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
         doc_FunctionContextTest.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("/root/child");
@@ -2985,7 +2992,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc_FunctionContextTest = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
+        Element root = doc_FunctionContextTest.createElementNS("http://www.example.org/", "root");
         doc_FunctionContextTest.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("/root/child");
@@ -3070,8 +3077,8 @@ public class BagClass extends TestCase {
         org.w3c.dom.Document doc_IdTest = builder_IdTest.parse(in);
         List result = xpath.selectNodes(doc_IdTest);
         assertEquals(1, result.size());
-        org.w3c.dom.Element a = (org.w3c.dom.Element) result.get(0);
-        assertEquals("a", a.getLocalName());
+        Element a = (Element) result.get(0);
+        assertEquals("a", a.getNodeName());
     }
 
     public void testFindMultipleElementsByMultipleIDs_IdTest() throws JaxenException, SAXException, IOException, ParserConfigurationException {
@@ -3086,8 +3093,8 @@ public class BagClass extends TestCase {
         org.w3c.dom.Document doc_IdTest = builder_IdTest.parse(in);
         List result = xpath.selectNodes(doc_IdTest);
         assertEquals(2, result.size());
-        org.w3c.dom.Element a1 = (org.w3c.dom.Element) result.get(0);
-        org.w3c.dom.Element a2 = (org.w3c.dom.Element) result.get(1);
+        Element a1 = (Element) result.get(0);
+        Element a2 = (Element) result.get(1);
         assertEquals("a", a1.getNodeName());
         assertEquals("a", a2.getNodeName());
     }
@@ -3104,7 +3111,7 @@ public class BagClass extends TestCase {
         org.w3c.dom.Document doc_IdTest = builder_IdTest.parse(in);
         List result = xpath.selectNodes(doc_IdTest);
         assertEquals(1, result.size());
-        org.w3c.dom.Element a = (org.w3c.dom.Element) result.get(0);
+        Element a = (Element) result.get(0);
         assertEquals("a", a.getNodeName());
     }
 
@@ -3180,7 +3187,7 @@ public class BagClass extends TestCase {
                 reader.parse(path);
                 XPathExpr xpath = handler.getXPathExpr(false);
                 fail("Parsed bogus path as: " + xpath);
-            } catch (XPathSyntaxException e) {
+            } catch (org.jaxen.saxpath.XPathSyntaxException e) {
             }
         }
     }
@@ -3212,8 +3219,8 @@ public class BagClass extends TestCase {
     }
 
     public void testNullNamespace_JDOMNavigatorTest() throws JaxenException {
-    	org.jdom.Namespace my = org.jdom.Namespace.getNamespace("foo", "http://mynamespace.org/");
-        org.jdom.Document doc = new org.jdom.Document();
+        Namespace my = Namespace.getNamespace("foo", "http://mynamespace.org/");
+        Document doc = new Document();
         org.jdom.Element root = new org.jdom.Element("root", my);
         doc.setRootElement(root);
         XPath nullNamespacePath = new JDOMXPath("/root");
@@ -3228,7 +3235,7 @@ public class BagClass extends TestCase {
     public void testSelection_JDOMXPathTest() throws JaxenException, JDOMException, IOException {
         XPath xpath = new JDOMXPath("/foo/bar/baz");
         SAXBuilder builder = new SAXBuilder();
-        org.jdom.Document doc = builder.build(BASIC_XML_JDOMXPathTest);
+        Document doc = builder.build(BASIC_XML_JDOMXPathTest);
         List results = xpath.selectNodes(doc);
         assertEquals(3, results.size());
         Iterator iter = results.iterator();
@@ -3241,7 +3248,7 @@ public class BagClass extends TestCase {
     public void testGetDocumentNode_JDOMXPathTest() throws JaxenException, JDOMException, IOException {
         XPath xpath = new JDOMXPath("/");
         SAXBuilder builder = new SAXBuilder();
-        org.jdom.Document doc = builder.build(BASIC_XML_JDOMXPathTest);
+        Document doc = builder.build(BASIC_XML_JDOMXPathTest);
         org.jdom.Element root = doc.getRootElement();
         List results = xpath.selectNodes(root);
         assertEquals(1, results.size());
@@ -3252,45 +3259,45 @@ public class BagClass extends TestCase {
     public void testJaxen148_JDOMXPathTest() throws JaxenException, JDOMException, IOException {
         String xml = "<xml-document><nodes><node>" + "\ntest\n" + "</node></nodes></xml-document>";
         SAXBuilder builder = new SAXBuilder();
-        org.jdom.Document document = builder.build(new InputSource(new StringReader(xml)));
+        Document document = builder.build(new InputSource(new StringReader(xml)));
         JDOMXPath x = new JDOMXPath("/xml-document/nodes/node/text()");
-        org.jdom.Text t = ( org.jdom.Text) x.selectSingleNode(document);
+        Text t = (Text) x.selectSingleNode(document);
         assertEquals("\ntest\n", t.getText());
     }
 
     public void testJaxen53Text_JDOMXPathTest() throws JaxenException, JDOMException, IOException {
         XPath xpath = new JDOMXPath("//data/text() ");
         SAXBuilder builder = new SAXBuilder();
-        org.jdom.Document doc = builder.build(new StringReader("<root>\n<data>1</data>\n</root>"));
+        Document doc = builder.build(new StringReader("<root>\n<data>1</data>\n</root>"));
         List results = xpath.selectNodes(doc);
         assertEquals(1, results.size());
         Iterator iter = results.iterator();
-        org.jdom.Text result = (org.jdom.Text) iter.next();
+        Text result = (Text) iter.next();
         assertEquals("1", result.getValue());
     }
 
     public void testJaxen20AttributeNamespaceNodes_JDOMXPathTest() throws JaxenException {
-        org.jdom.Namespace ns1 = org.jdom.Namespace.getNamespace("p1", "www.acme1.org");
-        org.jdom.Namespace ns2 = org.jdom.Namespace.getNamespace("p2", "www.acme2.org");
+        Namespace ns1 = Namespace.getNamespace("p1", "www.acme1.org");
+        Namespace ns2 = Namespace.getNamespace("p2", "www.acme2.org");
         org.jdom.Element element = new org.jdom.Element("test", ns1);
         Attribute attribute = new Attribute("foo", "bar", ns2);
         element.setAttribute(attribute);
-        org.jdom.Document doc = new org.jdom.Document(element);
+        Document doc = new Document(element);
         XPath xpath = new JDOMXPath("//namespace::node()");
         List results = xpath.selectNodes(doc);
         assertEquals(3, results.size());
     }
 
     public void testNamespaceNodesAreInherited_JDOMXPathTest() throws JaxenException {
-        org.jdom.Namespace ns0 = org.jdom.Namespace.getNamespace("p0", "www.acme0.org");
-        org.jdom.Namespace ns1 = org.jdom.Namespace.getNamespace("p1", "www.acme1.org");
-        org.jdom.Namespace ns2 = org.jdom.Namespace.getNamespace("p2", "www.acme2.org");
+        Namespace ns0 = Namespace.getNamespace("p0", "www.acme0.org");
+        Namespace ns1 = Namespace.getNamespace("p1", "www.acme1.org");
+        Namespace ns2 = Namespace.getNamespace("p2", "www.acme2.org");
         org.jdom.Element element = new org.jdom.Element("test", ns1);
         Attribute attribute = new Attribute("foo", "bar", ns2);
         element.setAttribute(attribute);
         org.jdom.Element root = new org.jdom.Element("root", ns0);
         root.addContent(element);
-        org.jdom.Document doc = new org.jdom.Document(root);
+        Document doc = new Document(root);
         XPath xpath = new JDOMXPath("/*/*/namespace::node()");
         List results = xpath.selectNodes(doc);
         assertEquals(4, results.size());
@@ -3302,14 +3309,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang('en')]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "en");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3329,14 +3336,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang('fr')]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "en");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3353,14 +3360,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang('fr')]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3380,14 +3387,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang('f')]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3404,14 +3411,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang(d)]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3428,14 +3435,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang(x)]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3453,14 +3460,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//text()[lang('fr')]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3479,14 +3486,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("lang('fr')");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3503,14 +3510,14 @@ public class BagClass extends TestCase {
         builder_LangTest = factory.newDocumentBuilder();
         doc_LangTest = builder_LangTest.newDocument();
         BaseXPath xpath = new DOMXPath("//*[lang(3)]");
-        org.w3c.dom.Element a = doc_LangTest.createElementNS("", "a");
-        org.w3c.dom.Element b = doc_LangTest.createElementNS("", "b");
+        Element a = doc_LangTest.createElementNS("", "a");
+        Element b = doc_LangTest.createElementNS("", "b");
         b.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:lang", "fr-CA");
         doc_LangTest.appendChild(a);
         a.appendChild(b);
-        org.w3c.dom.Element x2 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x3 = doc_LangTest.createElementNS("", "x");
-        org.w3c.dom.Element x4 = doc_LangTest.createElementNS("", "x");
+        Element x2 = doc_LangTest.createElementNS("", "x");
+        Element x3 = doc_LangTest.createElementNS("", "x");
+        Element x4 = doc_LangTest.createElementNS("", "x");
         a.appendChild(x4);
         b.appendChild(x2);
         b.appendChild(x3);
@@ -3713,7 +3720,7 @@ public class BagClass extends TestCase {
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_LocalNameTest = builder.parse("xml/basic.xml");
         XPath xpath = new DOMXPath("local-name(/*/text())");
-        Text c = doc_LocalNameTest.createTextNode("test");
+        org.w3c.dom.Text c = doc_LocalNameTest.createTextNode("test");
         doc_LocalNameTest.getDocumentElement().appendChild(c);
         String result = (String) xpath.evaluate(doc_LocalNameTest);
         assertEquals("", result);
@@ -3749,7 +3756,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         org.w3c.dom.Document doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
+        Element root = doc.createElement("root");
         doc.appendChild(root);
         Double result = (Double) xpath.evaluate(doc);
         assertEquals(0.5, result.doubleValue(), 0.000001);
@@ -3759,9 +3766,9 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
+        Element root = doc.createElement("root");
         doc.appendChild(root);
-        org.w3c.dom.Element child = doc.createElementNS("http://www.example.org", "child");
+        Element child = doc.createElementNS("http://www.example.org", "child");
         child.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:pre", "value");
         root.appendChild(child);
         XPath xpath = new DOMXPath("namespace::node()");
@@ -3773,9 +3780,9 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
+        Element root = doc.createElement("root");
         doc.appendChild(root);
-        org.w3c.dom.Element child = doc.createElementNS("http://www.example.org", "foo:child");
+        Element child = doc.createElementNS("http://www.example.org", "foo:child");
         root.appendChild(child);
         XPath xpath = new DOMXPath("//namespace::node()");
         List result = xpath.selectNodes(doc);
@@ -3786,9 +3793,9 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
+        Element root = doc.createElement("root");
         doc.appendChild(root);
-        org.w3c.dom.Element child = doc.createElementNS("http://www.example.org", "foo:child");
+        Element child = doc.createElementNS("http://www.example.org", "foo:child");
         root.appendChild(child);
         XPath xpath = new DOMXPath("namespace::node()");
         List result = xpath.selectNodes(child);
@@ -3799,9 +3806,9 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
+        Element root = doc.createElement("root");
         doc.appendChild(root);
-        org.w3c.dom.Element child = doc.createElementNS("http://www.example.org", "child");
+        Element child = doc.createElementNS("http://www.example.org", "child");
         root.appendChild(child);
         XPath xpath = new DOMXPath("namespace::node()");
         List result = xpath.selectNodes(child);
@@ -3812,7 +3819,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElement("root");
+        Element root = doc.createElement("root");
         doc.appendChild(root);
         Attr a = doc.createAttributeNS("http://www.example.org/", "a");
         a.setNodeValue("value");
@@ -3826,7 +3833,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "root");
+        Element root = doc.createElementNS("http://www.example.org/", "root");
         doc.appendChild(root);
         XPath xpath = new DOMXPath("/pre:root");
         try {
@@ -3841,7 +3848,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "root");
+        Element root = doc.createElementNS("http://www.example.org/", "root");
         doc.appendChild(root);
         XPath xpath = new DOMXPath("/pre:root");
         xpath.addNamespace("pre", "http://www.example.org/");
@@ -3853,7 +3860,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "root");
+        Element root = doc.createElementNS("http://www.example.org/", "root");
         doc.appendChild(root);
         XPath xpath = new DOMXPath("/pre:root");
         SimpleNamespaceContext context = new SimpleNamespaceContext();
@@ -3939,7 +3946,7 @@ public class BagClass extends TestCase {
         builder_NamespaceURITest = factory.newDocumentBuilder();
         doc_NamespaceURITest = builder_NamespaceURITest.parse("xml/basic.xml");
         XPath xpath = new DOMXPath("namespace-uri(/*/text())");
-        Text c = doc_NamespaceURITest.createTextNode("test");
+        org.w3c.dom.Text c = doc_NamespaceURITest.createTextNode("test");
         doc_NamespaceURITest.getDocumentElement().appendChild(c);
         String result = (String) xpath.evaluate(doc_NamespaceURITest);
         assertEquals("", result);
@@ -4061,7 +4068,7 @@ public class BagClass extends TestCase {
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NameTest = builder.parse("xml/basic.xml");
         XPath xpath = new DOMXPath("name(/*/text())");
-        Text c = doc_NameTest.createTextNode("test");
+        org.w3c.dom.Text c = doc_NameTest.createTextNode("test");
         doc_NameTest.getDocumentElement().appendChild(c);
         String result = (String) xpath.evaluate(doc_NameTest);
         assertEquals("", result);
@@ -4097,20 +4104,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4126,20 +4133,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4155,20 +4162,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4184,20 +4191,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4213,20 +4220,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4242,20 +4249,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4271,20 +4278,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4300,20 +4307,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4329,20 +4336,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4358,20 +4365,20 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_NodesetEqualityTest = builder.newDocument();
-        org.w3c.dom.Element a = doc_NodesetEqualityTest.createElementNS("", "a");
+        Element a = doc_NodesetEqualityTest.createElementNS("", "a");
         doc_NodesetEqualityTest.appendChild(a);
-        org.w3c.dom.Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b1 = doc_NodesetEqualityTest.createElementNS("", "b");
         b1.appendChild(doc_NodesetEqualityTest.createTextNode("foo"));
-        org.w3c.dom.Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b2 = doc_NodesetEqualityTest.createElementNS("", "b");
         b2.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
-        org.w3c.dom.Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
+        Element b3 = doc_NodesetEqualityTest.createElementNS("", "b");
         b3.appendChild(doc_NodesetEqualityTest.createTextNode("blort"));
         a.appendChild(b1);
         a.appendChild(b2);
         a.appendChild(b3);
-        org.w3c.dom.Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
-        org.w3c.dom.Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c1 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c2 = doc_NodesetEqualityTest.createElementNS("", "c");
+        Element c3 = doc_NodesetEqualityTest.createElementNS("", "c");
         c2.appendChild(doc_NodesetEqualityTest.createTextNode(" 12.0 "));
         c3.appendChild(doc_NodesetEqualityTest.createTextNode("bar"));
         a.appendChild(c1);
@@ -4669,7 +4676,7 @@ public class BagClass extends TestCase {
             iterator_PrecedingSiblingAxisIteratorTest.next();
             fail("Iterated too far");
         } catch (NoSuchElementException ex) {
-            pass_PrecedingSiblingAxisIteratorTest();
+            pass_PrecedingAxisIteratorTest();
         }
     }
 
@@ -4691,7 +4698,7 @@ public class BagClass extends TestCase {
             iterator_PrecedingSiblingAxisIteratorTest.remove();
             fail("Removed from descendant axis iterator");
         } catch (UnsupportedOperationException ex) {
-            pass_PrecedingSiblingAxisIteratorTest();
+            pass_PrecedingAxisIteratorTest();
         }
     }
 
@@ -4886,7 +4893,7 @@ public class BagClass extends TestCase {
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         org.w3c.dom.Document doc = builder.newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "pre:root");
+        Element root = doc.createElementNS("http://www.example.org/", "pre:root");
         doc.appendChild(root);
         context.addElementNamespaces(new org.jaxen.dom.DocumentNavigator(), root);
         assertEquals("http://www.example.org/", context.translateNamespacePrefixToUri("pre"));
@@ -5152,20 +5159,20 @@ public class BagClass extends TestCase {
         assertEquals(1, result.intValue());
     }
 
-//    public void testStringLengthFunctionWithMalformedString_StringLengthTest() throws JaxenException, ParserConfigurationException {
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        factory.setNamespaceAware(true);
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        doc_StringLengthTest = builder.newDocument();
-//        doc_StringLengthTest.appendChild(doc_StringLengthTest.createElement("root"));
-//        BaseXPath xpath = new DOMXPath("string-length('?A?')");
-//        try {
-//            xpath.evaluate(doc_StringLengthTest);
-//            fail("Allowed Malformed string");
-//        } catch (FunctionCallException ex) {
-//            assertNotNull(ex.getMessage());
-//        }
-//    }
+    public void testStringLengthFunctionWithMalformedString_StringLengthTest() throws JaxenException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        doc_StringLengthTest = builder.newDocument();
+        doc_StringLengthTest.appendChild(doc_StringLengthTest.createElement("root"));
+        BaseXPath xpath = new DOMXPath("string-length('AB\uD834X')");
+        try {
+            xpath.evaluate(doc_StringLengthTest);
+            fail("Allowed Malformed string");
+        } catch (FunctionCallException ex) {
+            assertNotNull(ex.getMessage());
+        }
+    }
 
     public void testStringLengthFunctionRequiresExactlyOneArgument_StringLengthTest() throws JaxenException, ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -5841,10 +5848,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('abc', 'b', 'd')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("adc", result);
     }
 
@@ -5852,10 +5859,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('abc', 'b', 'dghf')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("adc", result);
     }
 
@@ -5863,11 +5870,11 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('a', 'b')");
         try {
-            xpath.selectNodes(doc);
+            xpath.selectNodes(doc_TranslateFunctionTest);
             fail("Allowed translate function with two arguments");
         } catch (FunctionCallException ex) {
             assertNotNull(ex.getMessage());
@@ -5878,11 +5885,11 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("substring-after('a', 'a', 'a', 'a')");
         try {
-            xpath.selectNodes(doc);
+            xpath.selectNodes(doc_TranslateFunctionTest);
             fail("Allowed translate function with four arguments");
         } catch (FunctionCallException ex) {
             assertNotNull(ex.getMessage());
@@ -5893,10 +5900,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('ab?b', 'b', 'd')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("ad?d", result);
     }
 
@@ -5904,10 +5911,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('ab??', '?', '?')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("ab??", result);
     }
 
@@ -5915,10 +5922,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('ab?b', '?', 'd')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("abdb", result);
     }
 
@@ -5926,10 +5933,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('ab?b', '?', 'da')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("abdb", result);
     }
 
@@ -5937,10 +5944,10 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('abc', 'c', '?')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("ab?", result);
     }
 
@@ -5948,51 +5955,52 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('abc', 'c', '?b')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("ab?", result);
     }
 
-//    public void testTranslateWithMalformedSurrogatePair_TranslateFunctionTest() throws JaxenException, ParserConfigurationException {
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        factory.setNamespaceAware(true);
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        doc = builder.newDocument();
-//        doc.appendChild(doc.createElement("root"));
-//        XPath xpath = new DOMXPath("translate('abc', 'c', '?X?b')");
-//        try {
-//            xpath.evaluate(doc);
-//            fail("Allowed malformed surrogate pair");
-//        } catch (FunctionCallException ex) {
-//            assertNotNull(ex.getMessage());
-//        }
-//    }
+    public void testTranslateWithMalformedSurrogatePair_TranslateFunctionTest() throws JaxenException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
+        String str = "'\uD834X\uDD00b')";
+        XPath xpath = new DOMXPath("translate('abc', 'c', " + str);
+        try {
+            xpath.evaluate(doc_TranslateFunctionTest);
+            fail("Allowed malformed surrogate pair");
+        } catch (FunctionCallException ex) {
+            assertNotNull(ex.getMessage());
+        }
+    }
 
-//    public void testTranslateWithMissingLowSurrogate_TranslateFunctionTest() throws JaxenException, ParserConfigurationException {
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        factory.setNamespaceAware(true);
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        doc = builder.newDocument();
-//        doc.appendChild(doc.createElement("root"));
-//        XPath xpath = new DOMXPath("translate('abc', 'c', 'AB?X')");
-//        try {
-//            xpath.evaluate(doc);
-//            fail("Allowed malformed surrogate pair");
-//        } catch (FunctionCallException ex) {
-//            assertNotNull(ex.getMessage());
-//        }
-//    }
+    public void testTranslateWithMissingLowSurrogate_TranslateFunctionTest() throws JaxenException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
+        XPath xpath = new DOMXPath("translate('abc', 'c', 'AB\uD834X')");
+        try {
+            xpath.evaluate(doc_TranslateFunctionTest);
+            fail("Allowed malformed surrogate pair");
+        } catch (FunctionCallException ex) {
+            assertNotNull(ex.getMessage());
+        }
+    }
 
     public void testTranslateWithExtraCharsInReplacementString_TranslateFunctionTest() throws JaxenException, ParserConfigurationException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
         XPath xpath = new DOMXPath("translate('abc', 'c', 'def')");
-        String result = (String) xpath.evaluate(doc);
+        String result = (String) xpath.evaluate(doc_TranslateFunctionTest);
         assertEquals("abd", result);
     }
 
@@ -6048,7 +6056,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "root");
+        Element root = doc.createElementNS("http://www.example.org/", "root");
         doc.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("$a/root");
@@ -6064,7 +6072,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "root");
+        Element root = doc.createElementNS("http://www.example.org/", "root");
         doc.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         DOMXPath xpath = new DOMXPath("/root/child");
@@ -6075,7 +6083,7 @@ public class BagClass extends TestCase {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         doc = factory.newDocumentBuilder().newDocument();
-        org.w3c.dom.Element root = doc.createElementNS("http://www.example.org/", "root");
+        Element root = doc.createElementNS("http://www.example.org/", "root");
         doc.appendChild(root);
         root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "http://www.example.org/");
         SimpleVariableContext context = new SimpleVariableContext();
@@ -6098,13 +6106,13 @@ public class BagClass extends TestCase {
     public void testSelection_XOMXPathTest() throws ParsingException, IOException, JaxenException {
         XPath xpath = new XOMXPath("/foo/bar/baz");
         Builder builder = new Builder();
-        Document doc = builder.build(BASIC_XML_XOMXPathTest);
+        nu.xom.Document doc = builder.build(BASIC_XML_XOMXPathTest);
         List results = xpath.selectNodes(doc);
         assertEquals(3, results.size());
         Iterator iter = results.iterator();
-        assertEquals("baz", ((Element) iter.next()).getLocalName());
-        assertEquals("baz", ((Element) iter.next()).getLocalName());
-        assertEquals("baz", ((Element) iter.next()).getLocalName());
+        assertEquals("baz", ((nu.xom.Element) iter.next()).getLocalName());
+        assertEquals("baz", ((nu.xom.Element) iter.next()).getLocalName());
+        assertEquals("baz", ((nu.xom.Element) iter.next()).getLocalName());
         assertTrue(!iter.hasNext());
     }
 
@@ -6112,6 +6120,7 @@ public class BagClass extends TestCase {
         System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
         XPathReader reader = XPathReaderFactory.createReader();
         assertNotNull(reader);
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testValidByProperty_XPathReaderFactoryTest() throws SAXPathException {
@@ -6119,6 +6128,7 @@ public class BagClass extends TestCase {
         XPathReader reader = XPathReaderFactory.createReader();
         assertNotNull(reader);
         assertSame(org.jaxen.test.MockXPathReader.class, reader.getClass());
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testInvalidByProperty_XPathReaderFactoryTest() {
@@ -6129,6 +6139,7 @@ public class BagClass extends TestCase {
         } catch (SAXPathException e) {
             assertNotNull(e.getMessage());
         }
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testNonExistantByProperty_XPathReaderFactoryTest() {
@@ -6138,12 +6149,14 @@ public class BagClass extends TestCase {
             fail("Should have thrown SAXPathException");
         } catch (org.jaxen.saxpath.SAXPathException e) {
         }
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testValidExplicit_XPathReaderFactoryTest() throws SAXPathException {
         XPathReader reader = XPathReaderFactory.createReader("org.jaxen.test.MockXPathReader");
         assertNotNull(reader);
         assertSame(org.jaxen.test.MockXPathReader.class, reader.getClass());
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testInvalidExplicit_XPathReaderFactoryTest() {
@@ -6152,6 +6165,7 @@ public class BagClass extends TestCase {
             fail("Should have thrown SAXPathException");
         } catch (org.jaxen.saxpath.SAXPathException e) {
         }
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testNonExistantExplicit_XPathReaderFactoryTest() {
@@ -6160,12 +6174,13 @@ public class BagClass extends TestCase {
             fail("Should have thrown SAXPathException");
         } catch (org.jaxen.saxpath.SAXPathException e) {
         }
+        System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "");
     }
 
     public void testPaths_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6175,21 +6190,21 @@ public class BagClass extends TestCase {
         }
         this.reader_XPathReaderTest = null;
     }
-
+    
     public void testBogusPaths_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
         doc_XPathReaderTest = builder.parse("xml/basic.xml");
-        for (int i = 0; i < bogusPaths.length; ++i) {
-            final String[] bogusPath = bogusPaths[i];
+        for (int i = 0; i < bogusPaths_XPathReaderTest.length; ++i) {
+            final String[] bogusPath = bogusPaths_XPathReaderTest[i];
             try {
                 reader_XPathReaderTest.parse(bogusPath[0]);
                 fail("Should have thrown XPathSyntaxException for " + bogusPath[0]);
-            } catch (XPathSyntaxException e) {
+            } catch (org.jaxen.saxpath.XPathSyntaxException e) {
                 assertEquals(bogusPath[1], e.getMessage());
             }
         }
@@ -6198,8 +6213,8 @@ public class BagClass extends TestCase {
 
     public void testChildrenOfNumber_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6207,7 +6222,7 @@ public class BagClass extends TestCase {
         try {
             reader_XPathReaderTest.parse("1/child::test");
             fail("Should have thrown XPathSyntaxException for 1/child::test");
-        } catch (XPathSyntaxException e) {
+        } catch (org.jaxen.saxpath.XPathSyntaxException e) {
             assertEquals("Node-set expected", e.getMessage());
         }
         this.reader_XPathReaderTest = null;
@@ -6215,8 +6230,8 @@ public class BagClass extends TestCase {
 
     public void testChildIsNumber_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6224,7 +6239,7 @@ public class BagClass extends TestCase {
         try {
             reader_XPathReaderTest.parse("jane/3");
             fail("Should have thrown XPathSyntaxException for jane/3");
-        } catch (XPathSyntaxException e) {
+        } catch (org.jaxen.saxpath.XPathSyntaxException e) {
             assertEquals("Expected one of '.', '..', '@', '*', <QName>", e.getMessage());
         }
         this.reader_XPathReaderTest = null;
@@ -6232,8 +6247,8 @@ public class BagClass extends TestCase {
 
     public void testNumberOrNumber_XPathReaderTest() throws ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6250,8 +6265,8 @@ public class BagClass extends TestCase {
 
     public void testStringOrNumber_XPathReaderTest() throws ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6268,8 +6283,8 @@ public class BagClass extends TestCase {
 
     public void testStringOrString_XPathReaderTest() throws ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6286,8 +6301,8 @@ public class BagClass extends TestCase {
 
     public void testUnionofNodesAndNonNodes_XPathReaderTest() throws ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6304,8 +6319,8 @@ public class BagClass extends TestCase {
 
     public void testValidAxis_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6316,8 +6331,8 @@ public class BagClass extends TestCase {
 
     public void testInvalidAxis_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6325,7 +6340,7 @@ public class BagClass extends TestCase {
         try {
             reader_XPathReaderTest.parse("chyld::foo");
             fail("Should have thrown XPathSyntaxException");
-        } catch (XPathSyntaxException ex) {
+        } catch (org.jaxen.saxpath.XPathSyntaxException ex) {
             assertNotNull(ex.getMessage());
         }
         this.reader_XPathReaderTest = null;
@@ -6333,8 +6348,8 @@ public class BagClass extends TestCase {
 
     public void testLocationPathStartsWithVariable_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6345,8 +6360,8 @@ public class BagClass extends TestCase {
 
     public void testLocationPathStartsWithParentheses_XPathReaderTest() throws SAXPathException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6357,8 +6372,8 @@ public class BagClass extends TestCase {
 
     public void testNoSpaceAfterDiv_XPathReaderTest() throws JaxenException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6371,8 +6386,8 @@ public class BagClass extends TestCase {
 
     public void testNoSpaceAfterMod_XPathReaderTest() throws JaxenException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6385,8 +6400,8 @@ public class BagClass extends TestCase {
 
     public void testNoSpaceAfterPlus_XPathReaderTest() throws JaxenException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6399,8 +6414,8 @@ public class BagClass extends TestCase {
 
     public void testNoSpaceAfterAnd_XPathReaderTest() throws JaxenException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6413,8 +6428,8 @@ public class BagClass extends TestCase {
 
     public void testNoSpaceAfterOr_XPathReaderTest() throws JaxenException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6427,8 +6442,8 @@ public class BagClass extends TestCase {
 
     public void testAndImmediatelyFollowedByRelativeLocationPath_XPathReaderTest() throws JaxenException, ParserConfigurationException, SAXException, IOException {
         this.reader_XPathReaderTest = new org.jaxen.saxpath.base.XPathReader();
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
-        this.reader_XPathReaderTest.setXPathHandler(this.actual_ConformanceXPathHandler);
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
+        this.reader_XPathReaderTest.setXPathHandler(this.actual_XPathReaderTest);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -6443,7 +6458,7 @@ public class BagClass extends TestCase {
         try {
             new DOMXPath("///triple slash");
             fail("Bad parsing");
-        } catch (org.jaxen.XPathSyntaxException ex) {
+        } catch (XPathSyntaxException ex) {
             assertEquals("///triple slash", ex.getXPath());
         }
     }
@@ -6452,7 +6467,7 @@ public class BagClass extends TestCase {
         try {
             new DOMXPath("///triple slash");
             fail("Bad parsing");
-        } catch (org.jaxen.XPathSyntaxException ex) {
+        } catch (XPathSyntaxException ex) {
             assertTrue(ex.getPositionMarker().startsWith("  "));
             assertTrue(ex.getPositionMarker().endsWith("^"));
         }
@@ -6462,7 +6477,7 @@ public class BagClass extends TestCase {
         try {
             new DOMXPath("///triple slash");
             fail("Bad parsing");
-        } catch (org.jaxen.XPathSyntaxException ex) {
+        } catch (XPathSyntaxException ex) {
             String message = ex.getMultilineMessage();
             assertTrue(message.indexOf("\n///triple slash\n") > 1);
             assertTrue(message.endsWith("^"));

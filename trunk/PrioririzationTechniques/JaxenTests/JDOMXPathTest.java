@@ -155,7 +155,6 @@ public class JDOMXPathTest extends TestCase
         Document doc = builder.build( new StringReader("<root>\n<data>1</data>\n</root>") );
 
         List results = xpath.selectNodes( doc );
-
         assertEquals( 1,
                       results.size() );
 

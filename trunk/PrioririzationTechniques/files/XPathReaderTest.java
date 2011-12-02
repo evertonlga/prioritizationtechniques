@@ -67,12 +67,12 @@ import org.xml.sax.SAXException;
 
 public class XPathReaderTest extends TestCase
 {
-    private ConformanceXPathHandler actual_ConformanceXPathHandler;
+    private ConformanceXPathHandler actual_XPathReaderTest;
     private Document doc_XPathReaderTest;
 
     private XPathReader reader_XPathReaderTest;
 
-    private String[] paths = {
+    private String[] paths_XPathReaderTest = {
         "/foo/bar[@a='1' and @b='2']",
         "/foo/bar[@a='1' and @b!='2']",
         "$varname[@a='1']",
@@ -80,7 +80,7 @@ public class XPathReaderTest extends TestCase
         "'//*[contains(string(text()),\"yada yada\")]'",
     };
 
-    private String[][] bogusPaths = {
+    private String[][] bogusPaths_XPathReaderTest = {
         new String[]{"chyld::foo", "Expected valid axis name instead of [chyld]"},
         new String[]{"foo/tacos()", "Expected node-type"},
         new String[]{"foo/tacos()", "Expected node-type"},
@@ -100,9 +100,9 @@ public class XPathReaderTest extends TestCase
     {
         this.reader_XPathReaderTest = new XPathReader();
 
-        this.actual_ConformanceXPathHandler = new ConformanceXPathHandler();
+        this.actual_XPathReaderTest = new ConformanceXPathHandler();
 
-        this.reader_XPathReaderTest.setXPathHandler( this.actual_ConformanceXPathHandler );
+        this.reader_XPathReaderTest.setXPathHandler( this.actual_XPathReaderTest );
         
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -123,18 +123,18 @@ public class XPathReaderTest extends TestCase
     public void testPaths() throws SAXPathException
     {
 
-        for( int i = 0; i < paths.length; ++i )
+        for( int i = 0; i < paths_XPathReaderTest.length; ++i )
         {
-            reader_XPathReaderTest.parse( paths[i] );
+            reader_XPathReaderTest.parse( paths_XPathReaderTest[i] );
         }
     }
 
     public void testBogusPaths() throws SAXPathException
     {
 
-        for( int i = 0; i < bogusPaths.length; ++i )
+        for( int i = 0; i < bogusPaths_XPathReaderTest.length; ++i )
         {
-            final String[] bogusPath = bogusPaths[i];
+            final String[] bogusPath = bogusPaths_XPathReaderTest[i];
 
             try
             {
@@ -266,7 +266,7 @@ public class XPathReaderTest extends TestCase
                                   "foo" );
         this.expected.endNameStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     } 
 
@@ -280,7 +280,7 @@ public class XPathReaderTest extends TestCase
                                   "bar" );
         this.expected.endNameStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }
 
@@ -293,7 +293,7 @@ public class XPathReaderTest extends TestCase
         this.expected.startAllNodeStep( Axis.PARENT );
         this.expected.endAllNodeStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }
 
@@ -306,7 +306,7 @@ public class XPathReaderTest extends TestCase
                                                            "cheese" );
         this.expected.endProcessingInstructionNodeStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
     }
 
     public void testProcessingInstructionStepNoName() throws SAXPathException
@@ -318,7 +318,7 @@ public class XPathReaderTest extends TestCase
                                                        "" );
         this.expected.endProcessingInstructionNodeStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }
 
@@ -331,7 +331,7 @@ public class XPathReaderTest extends TestCase
         this.expected.startAllNodeStep( Axis.PARENT );
         this.expected.endAllNodeStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }
 
@@ -344,7 +344,7 @@ public class XPathReaderTest extends TestCase
         this.expected.startTextNodeStep( Axis.PARENT );
         this.expected.endTextNodeStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }
 
@@ -357,7 +357,7 @@ public class XPathReaderTest extends TestCase
         this.expected.startCommentNodeStep( Axis.PARENT );
         this.expected.endCommentNodeStep();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }*/
 
@@ -396,7 +396,7 @@ public class XPathReaderTest extends TestCase
         this.expected.endNameStep();
         this.expected.endRelativeLocationPath();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }
 
@@ -421,7 +421,7 @@ public class XPathReaderTest extends TestCase
         this.expected.endNameStep();
         this.expected.endAbsoluteLocationPath();
         assertEquals( this.expected,
-          this.actual_ConformanceXPathHandler );
+          this.actual_XPathReaderTest );
 
     }*/
 

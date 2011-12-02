@@ -65,28 +65,28 @@ import org.w3c.dom.Document;
  */
 public class TranslateFunctionTest extends TestCase {
 
-    private Document doc;
+    private Document doc_TranslateFunctionTest;
     
     protected void setUp() throws ParserConfigurationException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
-        doc = builder.newDocument();
-        doc.appendChild(doc.createElement("root"));
+        doc_TranslateFunctionTest = builder.newDocument();
+        doc_TranslateFunctionTest.appendChild(doc_TranslateFunctionTest.createElement("root"));
     }
 
     public void testTranslate() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('abc', 'b', 'd')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("adc", result);
     }    
   
     public void testTranslateIgnoresExtraArguments() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('abc', 'b', 'dghf')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("adc", result);
     }    
   
@@ -96,7 +96,7 @@ public class TranslateFunctionTest extends TestCase {
         XPath xpath = new DOMXPath("translate('a', 'b')");
         
         try {
-            xpath.selectNodes(doc);
+            xpath.selectNodes(doc_TranslateFunctionTest);
             fail("Allowed translate function with two arguments");
         }
         catch (FunctionCallException ex) {
@@ -111,7 +111,7 @@ public class TranslateFunctionTest extends TestCase {
         XPath xpath = new DOMXPath("substring-after('a', 'a', 'a', 'a')");
         
         try {
-            xpath.selectNodes(doc);
+            xpath.selectNodes(doc_TranslateFunctionTest);
             fail("Allowed translate function with four arguments");
         }
         catch (FunctionCallException ex) {
@@ -123,21 +123,21 @@ public class TranslateFunctionTest extends TestCase {
     public void testTranslateStringThatContainsNonBMPChars() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('ab\uD834\uDD00b', 'b', 'd')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("ad\uD834\uDD00d", result);
     }
     
     public void testTranslateStringThatContainsPrivateUseChars() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('ab\uE000\uE001', '\uE000', '\uE001')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("ab\uE001\uE001", result);
     }
     
     public void testTranslateNonBMPChars() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('ab\uD834\uDD00b', '\uD834\uDD00', 'd')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("abdb", result);
     }   
     
@@ -145,7 +145,7 @@ public class TranslateFunctionTest extends TestCase {
     public void testTranslateNonBMPChars2() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('ab\uD834\uDD00b', '\uD834\uDD00', 'da')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("abdb", result);
     }   
     
@@ -153,7 +153,7 @@ public class TranslateFunctionTest extends TestCase {
     public void testTranslateWithNonBMPChars() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('abc', 'c', '\uD834\uDD00')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("ab\uD834\uDD00", result);
     }   
     
@@ -161,16 +161,17 @@ public class TranslateFunctionTest extends TestCase {
     public void testTranslateWithNonBMPChars2() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('abc', 'c', '\uD834\uDD00b')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("ab\uD834\uDD00", result);
     }   
     
 
     public void testTranslateWithMalformedSurrogatePair() throws JaxenException
     {
-        XPath xpath = new DOMXPath( "translate('abc', 'c', '\uD834X\uDD00b')" );
+        String str = "'\uD834X\uDD00b')";
+    	XPath xpath = new DOMXPath( "translate('abc', 'c', "+str );
         try {
-            xpath.evaluate( doc );
+            xpath.evaluate( doc_TranslateFunctionTest );
             fail("Allowed malformed surrogate pair");
         }
         catch (FunctionCallException ex) {
@@ -183,7 +184,7 @@ public class TranslateFunctionTest extends TestCase {
     {
         XPath xpath = new DOMXPath( "translate('abc', 'c', 'AB\uD834X')" );
         try {
-            xpath.evaluate( doc );
+            xpath.evaluate( doc_TranslateFunctionTest );
             fail("Allowed malformed surrogate pair");
         }
         catch (FunctionCallException ex) {
@@ -195,7 +196,7 @@ public class TranslateFunctionTest extends TestCase {
     public void testTranslateWithExtraCharsInReplacementString() throws JaxenException
     {
         XPath xpath = new DOMXPath( "translate('abc', 'c', 'def')" );
-        String result = (String) xpath.evaluate( doc );
+        String result = (String) xpath.evaluate( doc_TranslateFunctionTest );
         assertEquals("abd", result);
     }   
     

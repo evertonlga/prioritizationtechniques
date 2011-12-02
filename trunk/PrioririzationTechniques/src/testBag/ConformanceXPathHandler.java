@@ -56,11 +56,11 @@ import java.util.List;
 
 import org.jaxen.saxpath.XPathHandler;
 
-class ConformanceXPathHandler implements XPathHandler
+public class ConformanceXPathHandler implements XPathHandler
 {
     private List events;
 
-    ConformanceXPathHandler()
+    public ConformanceXPathHandler()
     {
         this.events = new LinkedList();
     }

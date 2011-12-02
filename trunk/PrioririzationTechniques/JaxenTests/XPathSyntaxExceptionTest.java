@@ -63,7 +63,7 @@ public class XPathSyntaxExceptionTest extends TestCase {
     public XPathSyntaxExceptionTest(String name) {
         super(name);
     }
-
+    
     public void testGetXPath() throws JaxenException {
         
         try {
