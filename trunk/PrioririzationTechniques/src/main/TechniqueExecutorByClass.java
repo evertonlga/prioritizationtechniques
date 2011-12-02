@@ -1,9 +1,6 @@
 package main;
 
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.expr.SuperExpr;
-
-import java.io.File;
 import java.util.ArrayList;
 
 import techniques.Random;
