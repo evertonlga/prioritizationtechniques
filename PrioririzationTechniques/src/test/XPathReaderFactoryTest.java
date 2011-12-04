@@ -33,7 +33,7 @@ public class XPathReaderFactoryTest extends TestCase {
         System.setProperty(XPathReaderFactory.DRIVER_PROPERTY, "org.jaxen.test.MockXPathReader");
         XPathReader reader = XPathReaderFactory.createReader();
         assertNotNull(reader);
-        assertSame(MockXPathReader.class, reader.getClass());
+        assertSame(org.jaxen.test.MockXPathReader.class, reader.getClass());
     }
 
     public void testNonExistantExplicit() {
@@ -57,7 +57,7 @@ public class XPathReaderFactoryTest extends TestCase {
     public void testValidExplicit() throws SAXPathException {
         XPathReader reader = XPathReaderFactory.createReader("org.jaxen.test.MockXPathReader");
         assertNotNull(reader);
-        assertSame(MockXPathReader.class, reader.getClass());
+        assertSame(org.jaxen.test.MockXPathReader.class, reader.getClass());
     }
 
     public void testNonExistantByProperty() {

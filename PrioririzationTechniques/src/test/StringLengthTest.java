@@ -28,7 +28,7 @@ public class StringLengthTest extends TestCase {
     }
 
     public void testStringLengthFunctionWithMalformedString() throws JaxenException {
-        BaseXPath xpath = new DOMXPath("string-length('?A?')");
+        BaseXPath xpath = new DOMXPath("string-length('\uD834A\uDD00')");
         try {
             xpath.evaluate(doc);
             fail("Allowed Malformed string");

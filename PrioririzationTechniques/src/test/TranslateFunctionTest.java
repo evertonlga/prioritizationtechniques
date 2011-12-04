@@ -23,13 +23,13 @@ public class TranslateFunctionTest extends TestCase {
     }
 
     public void testTranslateWithNonBMPChars2() throws JaxenException {
-        XPath xpath = new DOMXPath("translate('abc', 'c', '?b')");
+        XPath xpath = new DOMXPath("translate('abc', 'c', '\uD834\uDD00b')");
         String result = (String) xpath.evaluate(doc);
-        assertEquals("ab?", result);
+        assertEquals("ab\uD834\uDD00", result);
     }
 
     public void testTranslateWithMalformedSurrogatePair() throws JaxenException {
-        XPath xpath = new DOMXPath("translate('abc', 'c', '?X?b')");
+        XPath xpath = new DOMXPath("translate('abc', 'c', '\uD834X\uDD00b')')");
         try {
             xpath.evaluate(doc);
             fail("Allowed malformed surrogate pair");
@@ -69,7 +69,7 @@ public class TranslateFunctionTest extends TestCase {
     }
 
     public void testTranslateWithMissingLowSurrogate() throws JaxenException {
-        XPath xpath = new DOMXPath("translate('abc', 'c', 'AB?X')");
+        XPath xpath = new DOMXPath("translate('abc', 'c', 'AB\uD834X')");
         try {
             xpath.evaluate(doc);
             fail("Allowed malformed surrogate pair");
