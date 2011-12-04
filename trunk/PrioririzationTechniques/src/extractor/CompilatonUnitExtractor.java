@@ -43,4 +43,39 @@ public class CompilatonUnitExtractor {
 		return cUnitsSource;
 	}
 	
+	
+	public CompilationUnit getCompUnitSource(String nameDir, String fileName){
+		FileInputStream in = null;
+		File folder = new File(nameDir);
+		File[] files = folder.listFiles();
+		
+		CompilationUnit cUnitSource = new CompilationUnit();
+		for (File file : files) {
+			if (file.getName().endsWith(".java")){
+				try {
+					in = new FileInputStream(file);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			try {
+				// parse the file
+				CompilationUnit currentfile = JavaParser.parse(in);
+				if (currentfile.getTypes().get(0).getName().equals(fileName)){
+					cUnitSource = currentfile;
+				}
+				
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			}
+			
+		}
+		return cUnitSource;
+	}
 }
