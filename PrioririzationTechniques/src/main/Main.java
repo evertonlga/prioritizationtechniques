@@ -19,8 +19,6 @@ import extractor.Extractor;
 
 public class Main {
 
-	private Result run;
-
 	/**
 	 * @param args
 	 */
@@ -32,21 +30,29 @@ public class Main {
 //		String outputPackage = args[2];
 //		String priorizationTechinique = args[3];	
 //		
-//		String nameFolder = "JaxenTests";
-//		String destinationFolder = "src/test";
-//		String outputPackage = "test";
-//		String priorizationTechinique = "Random";
-//		TechniqueExecutorByClass te = new TechniqueExecutorByClass();
-//		te.executor(nameFolder, destinationFolder, outputPackage, priorizationTechinique);
+		//extractTestClasses();
 		
-//		String nameFolder = "JaxenTests";
+		extractBagClass();
+	}
+
+	private static void extractTestClasses() {
+		String nameFolder = "JaxenTests";
+		String destinationFolder = "src/test";
+		String outputPackage = "test";
+		String priorizationTechinique = "Random";
+		TechniqueExecutorByClass te = new TechniqueExecutorByClass();
+		te.executor(nameFolder, destinationFolder, outputPackage, priorizationTechinique);
+	}
+
+	private static void extractBagClass() {
+		//		String nameFolder = "JaxenTests";
 		String nameFolder = "files";
 		String destinationFolder = "src/test";
 		String outputPackage = "test";
 		String priorizationTechinique = "Random";
-//		String destinationFolderBag = "src/testBag";
+		//		String destinationFolderBag = "src/testBag";
 		String destinationFolderBag = "src/testBag2";
-//		String outputPackageBag = "testBag";
+		//		String outputPackageBag = "testBag";
 		String outputPackageBag = "testBag2";
 		TechniqueExecutorAllClasses te2 = new TechniqueExecutorAllClasses();
 		te2.executor(nameFolder, destinationFolderBag, outputPackageBag, priorizationTechinique);
