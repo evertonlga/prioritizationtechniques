@@ -30,6 +30,7 @@ public class FileBagGenerator extends FileGenerator{
 		
 	}
 	
+	//TODO Classes que não começam com test não deve-se incluir o corpo do setUp e tearDown
 	private static void addingBagElements(TypeDeclaration bagType,
 			ArrayList[] elements) {
 		ArrayList<Integer> modifiers = elements[0];

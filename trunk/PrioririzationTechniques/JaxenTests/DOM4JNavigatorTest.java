@@ -68,8 +68,7 @@ public class DOM4JNavigatorTest extends XPathTestBase
     public DOM4JNavigatorTest(String name)
     {
         super( name );
-        this.reader_DOM4JNavigatorTest = new SAXReader();
-        this.reader_DOM4JNavigatorTest.setMergeAdjacentText( true );
+        
     }
     
     public Navigator getNavigator()
@@ -89,7 +88,9 @@ public class DOM4JNavigatorTest extends XPathTestBase
      */
     public void testConcurrentModification() throws FunctionCallException, UnsupportedAxisException
     {
-        Navigator nav = new DocumentNavigator();
+    	this.reader_DOM4JNavigatorTest = new SAXReader();
+        this.reader_DOM4JNavigatorTest.setMergeAdjacentText( true );
+    	Navigator nav = new DocumentNavigator();
         Object document = nav.getDocument("xml/testNamespaces.xml");
         Iterator descendantOrSelfAxisIterator = nav.getDescendantOrSelfAxisIterator(document);
         while (descendantOrSelfAxisIterator.hasNext()) {
