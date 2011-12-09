@@ -5,7 +5,7 @@ import java.io.File;
 public abstract class TechniqueExecutor {
 	
 	public void executor(String nameFolder, String destinationFolder,
-			String outputPackage, String priorizationTechinique) {
+			String outputPackage) {
 		
 		createOutputFolder(destinationFolder);
 	}

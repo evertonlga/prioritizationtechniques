@@ -21,7 +21,7 @@ public class Extractor {
 	private static List<ClassOrInterfaceType> interfaceRealizations = new ArrayList<ClassOrInterfaceType>();
 	private static CompilationUnit compilationUnit;
 	
-	private static ArrayList<MethodDeclaration> getTestMethods(String className) {
+	private static ArrayList<MethodDeclaration> getTestMethods(String className, boolean isBagClass) {
 		List<TypeDeclaration> types = compilationUnit.getTypes();
 		ArrayList<MethodDeclaration> testMethods = new ArrayList<MethodDeclaration>();
 		for (TypeDeclaration type : types) {
@@ -30,7 +30,8 @@ public class Extractor {
 				if (member instanceof MethodDeclaration) {
 					MethodDeclaration method = (MethodDeclaration) member;
 					if (!method.getName().startsWith("setUp") && !method.getName().startsWith("tearDown")){
-						method.setName(method.getName()+"_"+className);
+						if (!isBagClass)
+							method.setName(method.getName()+"_"+className);
 						testMethods.add(method);
 					}
 				}
@@ -138,7 +139,7 @@ public class Extractor {
 		return list;
 	}
 	
-	public static ArrayList[] extract(CompilationUnit compilationUnit){
+	public static ArrayList[] extract(CompilationUnit compilationUnit, boolean isBagClass){
 		ArrayList<MethodDeclaration> testMethods = new ArrayList<MethodDeclaration>();
 		ArrayList<MethodDeclaration> setUpTearDownMethods = new ArrayList<MethodDeclaration>();
 		ArrayList<FieldDeclaration> fields = new ArrayList<FieldDeclaration>();
@@ -158,7 +159,7 @@ public class Extractor {
 		ArrayList<ClassOrInterfaceType> interfaces = new ArrayList<ClassOrInterfaceType>(extractInterfaces());
 		
 		
-		testMethods = getTestMethods(names.get(0));
+		testMethods = getTestMethods(names.get(0), isBagClass);
 		setUpTearDownMethods = getSetUpTearDownMethods();
 		fields = getFields();
 		innerClasses = getInnerClasses();
@@ -167,6 +168,37 @@ public class Extractor {
 		ArrayList[] returnElements = {modifier, imports, superClass, interfaces, names, testMethods, setUpTearDownMethods, fields, innerClasses, constructors};
 		return returnElements;
 	}
+	
+//	public static ArrayList[] extract(String filePath, boolean isBagClass){
+//		ArrayList<MethodDeclaration> testMethods = new ArrayList<MethodDeclaration>();
+//		ArrayList<MethodDeclaration> setUpTearDownMethods = new ArrayList<MethodDeclaration>();
+//		ArrayList<FieldDeclaration> fields = new ArrayList<FieldDeclaration>();
+//		ArrayList<Integer> modifier;
+//		ArrayList<ImportDeclaration> imports;
+//		
+//		ArrayList<String> names;
+//		ArrayList<ClassOrInterfaceDeclaration> innerClasses = new ArrayList<ClassOrInterfaceDeclaration>();
+//		ArrayList<ConstructorDeclaration> constructors = new ArrayList<ConstructorDeclaration>();
+//		
+//		ArrayList<CompilationUnit> compUnits = new CompilatonUnitExtractor().getCompUnitsSource(filePath);
+//		Extractor.compilationUnit = compUnits.get(0);
+//		
+//		names = getName();
+//		modifier = extractModifiers();
+//		imports = new ArrayList<ImportDeclaration>(extractImports());
+//		ArrayList<ClassOrInterfaceType> superClass = new ArrayList<ClassOrInterfaceType>(extractSuperClass());
+//		ArrayList<ClassOrInterfaceType> interfaces = new ArrayList<ClassOrInterfaceType>(extractInterfaces());
+//		
+//		
+//		testMethods = getTestMethods(names.get(0), isBagClass);
+//		setUpTearDownMethods = getSetUpTearDownMethods();
+//		fields = getFields();
+//		innerClasses = getInnerClasses();
+//		constructors = getConstructors();
+//		
+//		ArrayList[] returnElements = {modifier, imports, superClass, interfaces, names, testMethods, setUpTearDownMethods, fields, innerClasses, constructors};
+//		return returnElements;
+//	}
 	
 	private static ArrayList<String> getName() {
 		ArrayList<String> names = new ArrayList<String>();
