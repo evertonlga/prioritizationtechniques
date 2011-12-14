@@ -1,1 +1,1 @@
-java -jar lib/Tests.jar
+java -jar lib/prioritization.jar "src/byClass" "src/byClass/output" "byClass.output" "Random" "DOM4JNavigatorTest" --start

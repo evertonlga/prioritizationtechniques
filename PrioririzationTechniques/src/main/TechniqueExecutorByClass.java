@@ -1,9 +1,18 @@
 package main;
 
 import japa.parser.ast.CompilationUnit;
+
+import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import techniques.Random;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Request;
+
+import techniques.Randomize;
 import extractor.CompilatonUnitExtractor;
 import extractor.Extractor;
 import fileGenerator.FileGenerator;
@@ -24,13 +33,13 @@ public class TechniqueExecutorByClass extends TechniqueExecutor{
 		for (CompilationUnit compilationUnit : compUnits) {	 		
 			ArrayList[] elements = Extractor.extract(compilationUnit, isBagClass); 
 			elements[5] = applyTechnique(elements[5], priorizationTechinique);
-			FileGenerator.generateTestClasses(compilationUnit, elements, destinationFolder, outputPackage);
+			FileGenerator.generateTestClasses(compilationUnit, elements, destinationFolder, outputPackage, "");
 		}
 	}
 
 	public static ArrayList applyTechnique(ArrayList elements, String priorizationTechinique) {
 		if (priorizationTechinique.equals("Random")){
-			return Random.applyRandom(elements);
+			return Randomize.applyRandom(elements);
 		}
 		return null;
 	}
@@ -53,10 +62,70 @@ public class TechniqueExecutorByClass extends TechniqueExecutor{
 			if (compilationUnit.getTypes().get(0).getName().equals(nameFile)){
 				ArrayList[] elements = Extractor.extract(compilationUnit, false); 
 				elements[5] = applyTechnique(elements[5], priorizationTechinique);
-				FileGenerator.generateTestClasses(compilationUnit, elements, destinationFolder, outputPackage);
+				FileGenerator.generateTestClasses(compilationUnit, elements, destinationFolder, outputPackage, "");
 				return;
 			}
 		}
 		
 	}
+	
+	public int indexOfTheFirstFailTestCase(String nameFolder, String nameFile, String destinationFolder, String outputPackageOrig){
+		
+//		String nameFolder = "src/byClass";
+//		String destinationFolder = "src/byClass/output";
+//		String outputPackage = "byClass.output";
+//		String priorizationTechinique = "Random";
+//		String nameFile = "DOM4JNavigatorTest";
+		destinationFolder = destinationFolder.replace('.', '/');
+		String outputPackage = outputPackageOrig.replace('.', '/');
+		
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		String fileToCompile = destinationFolder+"/"+nameFile+".java";
+		String copiledFile1 = destinationFolder+"/"+nameFile+".class";
+		String copiledFile2 = "bin/"+outputPackage+"/"+nameFile+".class";
+		
+		boolean success = (new File(copiledFile1)).delete();
+		boolean success2 = (new File("bin/byClass/output/DOM4JNavigatorTest.class")).delete();
+		System.out.println(success2);
+		int compilationResult = compiler.run(null, null, null, fileToCompile);
+		 // arquivo a ser movido
+        File arquivo = new File(destinationFolder+"/"+nameFile+".class");
+    
+        // diretorio de destino
+        File dir = new File("bin/"+outputPackage);
+    
+        // move o arquivo para o novo diretorio
+        boolean ok = arquivo.renameTo(new File(dir, arquivo.getName()));
+		
+//		System.out.println(compilationResult);
+		Class c;
+		JUnitCore juc = new JUnitCore();
+
+		try {
+			c = Class.forName("byClass.output.DOM4JNavigatorTest");
+			Method[] methods = c.getDeclaredMethods();
+			int i = 0;
+			for (Method method: methods) {
+				if (method.getName().startsWith("test")){
+					i++;
+					//							System.out.println(method.getName());
+					if (!juc.run(Request.method(c, method.getName())).wasSuccessful()){
+						success = (new File(copiledFile1)).delete();
+						success2 = (new File("bin/byClass/output/DOM4JNavigatorTest.class")).delete();
+						c = null;
+						return i;
+					}
+				} 
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//				c = Class.forName(outputPackageOrig+"."+nameFile);
+		success = (new File(copiledFile1)).delete();
+		success2 = (new File("bin/byClass/output/DOM4JNavigatorTest.class")).delete();	
+		c = null;
+		return -1;
+	}
+	
 }
