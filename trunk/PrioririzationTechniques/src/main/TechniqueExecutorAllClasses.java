@@ -5,7 +5,6 @@ import japa.parser.ast.CompilationUnit;
 import java.io.File;
 import java.util.ArrayList;
 
-import techniques.Random;
 import extractor.CompilatonUnitExtractor;
 import extractor.Extractor;
 import fileGenerator.FileBagGenerator;

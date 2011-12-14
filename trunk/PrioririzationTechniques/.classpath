@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/jdom-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/xom-1.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/Jaxen2.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/jdk1.6.0_20/lib/tools.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

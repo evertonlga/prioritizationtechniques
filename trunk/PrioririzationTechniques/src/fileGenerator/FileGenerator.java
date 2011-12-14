@@ -27,7 +27,7 @@ public class FileGenerator {
 	private static CompilationUnit cUnitTarget;
 	
 	
-	protected static CompilationUnit createTargetCompUnit(CompilationUnit cUnitSource, String outputPackageName, ArrayList[] elements){
+	protected static CompilationUnit createTargetCompUnit(CompilationUnit cUnitSource, String outputPackageName, String nameFile, ArrayList[] elements){
 //		{modifier, imports, superClass, interfaces, names, testMethods, setUpTearDownMethods, fields, innerClasses, constructors};
 		ArrayList<Integer> modifiers = elements[0];
 		ArrayList<ImportDeclaration> imports = elements[1];
@@ -43,7 +43,13 @@ public class FileGenerator {
 		//create the target compination unit
 		CompilationUnit auxCUnit = new CompilationUnit();
 		
-		String name = names.get(0);
+		String name;
+		
+		if (nameFile.equals("")){
+			name = names.get(0);
+		}else 
+			name = nameFile;
+		
 		int modifier = modifiers.get(0);
 				
 		//setting the package declaration and imports
@@ -119,8 +125,9 @@ public class FileGenerator {
         }
     }
 	
-	public static void generateTestClasses(CompilationUnit compilationUnit, ArrayList[] elements, String destinationFolder, String outputPackage){
-		CompilationUnit source = createTargetCompUnit(compilationUnit, outputPackage, elements);
-		createTargetFile(source.toString(), destinationFolder, compilationUnit.getTypes().get(0).getName());
+	public static void generateTestClasses(CompilationUnit compilationUnit, ArrayList[] elements, String destinationFolder, String outputPackage, String nameFile){
+		CompilationUnit source = createTargetCompUnit(compilationUnit, outputPackage, nameFile, elements);
+		
+		createTargetFile(source.toString(), destinationFolder, source.getTypes().get(0).getName());
 	}
 }

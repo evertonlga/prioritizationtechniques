@@ -1,15 +1,25 @@
 package techniques;
 
+import japa.parser.ast.body.MethodDeclaration;
 import japa.parser.ast.stmt.Statement;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Random implements PrioritizationTechnique{
+public class Randomize implements PrioritizationTechnique{
 
 	public static ArrayList applyRandom(ArrayList testMethods) {
 		Collections.shuffle(testMethods);
+		
+//		java.util.Random ran = new java.util.Random();
+//	    
+//	    for(int i = 0; i < testMethods.size(); i++){
+//	      int pos = ran.nextInt(testMethods.size());
+//	      MethodDeclaration temp = (MethodDeclaration) testMethods.get(i);
+//	      testMethods.set(i, testMethods.get(pos));
+//	      testMethods.set(pos, temp);
+//	    }
 		return testMethods;
 		
 	}

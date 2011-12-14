@@ -142,7 +142,7 @@ public class FileBagGenerator extends FileGenerator{
 			if ((classSuper.size() > 0 ) && (superclass.get(0).getName().equals("TestCase")))
 				addingBagElements (type, testCass);
 			else {
-				CompilationUnit newJavaFile = createTargetCompUnit(new CompilationUnit(), outputPackageName, testCass);
+				CompilationUnit newJavaFile = createTargetCompUnit(new CompilationUnit(), outputPackageName, "" ,testCass);
 				createTargetFile(newJavaFile.toString(), "src/testBag", (String) testCass[4].get(0));
 			}
 		}

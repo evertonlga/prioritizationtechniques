@@ -30,8 +30,8 @@ public class Extractor {
 				if (member instanceof MethodDeclaration) {
 					MethodDeclaration method = (MethodDeclaration) member;
 					if (!method.getName().startsWith("setUp") && !method.getName().startsWith("tearDown")){
-						if (!isBagClass)
-							method.setName(method.getName()+"_"+className);
+//						if (!isBagClass)
+//							method.setName(method.getName()+"_"+className);
 						testMethods.add(method);
 					}
 				}
