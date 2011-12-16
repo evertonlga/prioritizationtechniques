@@ -40,7 +40,7 @@ public class FileGenerator {
 		ArrayList<ClassOrInterfaceDeclaration> innerClasses = elements[8];
 		ArrayList<ConstructorDeclaration> constructors = elements[9];
 				
-		//create the target compination unit
+		//create the target compilation unit
 		CompilationUnit auxCUnit = new CompilationUnit();
 		
 		String name;
@@ -70,6 +70,7 @@ public class FileGenerator {
 		
 		// Setting the class constructors
 		for (ConstructorDeclaration c : constructors) {
+			c.setName(nameFile);
 			ASTHelper.addMember(type, c);
 		}
 		
@@ -97,6 +98,7 @@ public class FileGenerator {
 	protected static void createTargetFile(String source, String destinationFolder, String nameFile) {
 		try {
 			String destination = destinationFolder+"/"+nameFile+".java";
+			System.out.println(destination);
 			File file = new File(destination);
 			if (!file.createNewFile()){
 				file.delete();

@@ -15,10 +15,22 @@ public class CompilatonUnitExtractor {
 	public ArrayList<CompilationUnit> getCompUnitsSource(String nameDir){
 		FileInputStream in = null;
 		File folder = new File(nameDir);
+		String[] list = folder.list();
+		for (String string : list) {
+			System.out.println(string);
+		}
 		File[] files = folder.listFiles();
-		
+		System.out.println(nameDir);
+		System.out.println("NOMES DOS ARQUIVOS:");
+		for (File string : files) {
+			System.out.println(string.getName());
+		}
+		System.out.println(files);
+		System.out.println("Length: "+ files.length);
+				
 		ArrayList<CompilationUnit> cUnitsSource = new ArrayList<CompilationUnit>();
 		for (File file : files) {
+			System.out.println("file   "+file);
 			if (file.getName().endsWith(".java")){
 				try {
 					in = new FileInputStream(file);
