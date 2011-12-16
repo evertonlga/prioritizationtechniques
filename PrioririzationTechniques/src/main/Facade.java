@@ -1,30 +1,32 @@
 package main;
 
-import java.io.File;
-import java.lang.reflect.Method;
-
-import javax.tools.JavaCompiler;
-import javax.tools.Tool;
-import javax.tools.ToolProvider;
-
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Request;
-
-import byClass.output.*;
-
-import extractor.Extractor;
-
-
 public class Facade {
 
 	
-	private static void prioritizationBySuite(String nameFolder, String destinationFolder, String outputPackage, String nameFileSuite, String nameNewFileSuite, String priorizationTechinique) {
+	private int index;
+	
+	public int getIndex() {
+		return index;
+	}
+
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+
+	public void Facade(){
+		this.index = 0;
+	}
+
+
+	private void prioritizationBySuite(String nameFolder, String destinationFolder, String outputPackage, String nameFileSuite, String nameNewFileSuite, String priorizationTechinique) {
 		TechniqueExecutorBySuite tes = new TechniqueExecutorBySuite();
 		tes.executor(nameFolder, destinationFolder, outputPackage, nameFileSuite, nameNewFileSuite, priorizationTechinique);
 		
 	}
 
-	private static void priotitizationAllTestClasses(String nameFolder, String destinationFolder, String outputPackage, String priorizationTechinique, boolean isBagClass) {
+	private void priotitizationAllTestClasses(String nameFolder, String destinationFolder, String outputPackage, String priorizationTechinique, boolean isBagClass) {
 //		String nameFolder = "JaxenTests";
 //		String destinationFolder = "src/test";
 //		String outputPackage = "test";
@@ -33,7 +35,7 @@ public class Facade {
 		te.executor(nameFolder, destinationFolder, outputPackage, priorizationTechinique, isBagClass);
 	}
 
-	private static void prioritizationByBagClass(String nameFolder, String destinationFolderBag, String outputPackageBag, String priorizationTechinique) {
+	private void prioritizationByBagClass(String nameFolder, String destinationFolderBag, String outputPackageBag, String priorizationTechinique) {
 //		String nameFolder = "JaxenTests";
 //		String destinationFolder = "src/test";
 //		String outputPackage = "testBag";
@@ -42,14 +44,15 @@ public class Facade {
 		te2.executor(nameFolder, destinationFolderBag, outputPackageBag, priorizationTechinique);
 	}
 	
-	private static void prioritizationByClass (String nameFolder, String nameFile, String destinationFolder, String outputPackage, String priorizationTechinique){
+	private void prioritizationByClass (String nameFolder, String nameFile, String destinationFolder, String outputPackage, String priorizationTechinique){
 //		ArrayList[] elements = Extractor.extract(filePath, false);
 		TechniqueExecutorByClass te = new TechniqueExecutorByClass();
-		te.executor(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
-		System.out.println(te.indexOfTheFirstFailTestCase(nameFolder, nameFile, destinationFolder, outputPackage));
+		setIndex(getIndex()+1);
+		te.executor(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique, getIndex());
+//		System.out.println(te.indexOfTheFirstFailTestCase(nameFolder, nameFile+getIndex(), destinationFolder, outputPackage));
 	}
 	
-	private static void prioritizationAllTestCases(String nameFolder, String destinationFolderBag, String outputPackageBag, String priorizationTechinique) {
+	private void prioritizationAllTestCases(String nameFolder, String destinationFolderBag, String outputPackageBag, String priorizationTechinique) {
 //		String nameFolder = "JaxenTests";
 //		String destinationFolder = "src/test";
 //		String outputPackage = "testBag";
@@ -63,17 +66,19 @@ public class Facade {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String nameFolder = args[0];
-		String destinationFolder = args[1];
-		String outputPackage = args[2];
-		String priorizationTechinique = args[3];
-		String nameFile = args[4];
+//		String nameFolder = args[0];
+//		String destinationFolder = args[1];
+//		String outputPackage = args[2];
+//		String priorizationTechinique = args[3];
+//		String nameFile = args[4];
 		
-//		String nameFolder = "src/byClass";
-//		String destinationFolder = "src/byClass/output";
-//		String outputPackage = "byClass.output";
-//		String priorizationTechinique = "Random";
-//		String nameFile = "DOM4JNavigatorTest";
+		String nameFolder = "byClass";
+		String destinationFolder = "byClassoutput";
+		String outputPackage = "byClassoutput";
+		String priorizationTechinique = "Random";
+		String nameFile = "DOM4JNavigatorTest";
+		
+		Facade f = new Facade();
 		
 //		Class c;
 //		boolean success;
@@ -99,8 +104,20 @@ public class Facade {
 //			e.printStackTrace();
 //		}
 		
-		for (int i = 0; i < 2; i++) {
-			prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
+//		for (int i = 0; i < 2; i++) {
+			f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
+//			f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
+					
+			
+//			try {
+//				Object foo = new Reloader().loadClass("byClass.output.DOM4JNavigatorTest").newInstance();
+//			} catch (InstantiationException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IllegalAccessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 		
 		
@@ -174,6 +191,6 @@ public class Facade {
 		
 //		nameFile = "DOM4JNavigatorTest";
 //		prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
-	}
+
 
 }
