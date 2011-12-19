@@ -1,5 +1,7 @@
 package main;
 
+import util.SuiteGenerator;
+
 public class Facade {
 
 	
@@ -32,7 +34,7 @@ public class Facade {
 //		String outputPackage = "test";
 //		String priorizationTechinique = "Random";
 		TechniqueExecutorByClass te = new TechniqueExecutorByClass();
-		te.executor(nameFolder, destinationFolder, outputPackage, priorizationTechinique, isBagClass);
+//		te.executor(nameFolder, destinationFolder, outputPackage, priorizationTechinique, isBagClass);
 	}
 
 	private void prioritizationByBagClass(String nameFolder, String destinationFolderBag, String outputPackageBag, String priorizationTechinique) {
@@ -45,8 +47,8 @@ public class Facade {
 	}
 	
 	private void prioritizationByClass (String nameFolder, String nameFile, String destinationFolder, String outputPackage, String priorizationTechinique){
-//		ArrayList[] elements = Extractor.extract(filePath, false);
 		TechniqueExecutorByClass te = new TechniqueExecutorByClass();
+		
 		setIndex(getIndex()+1);
 		te.executor(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique, getIndex());
 //		System.out.println(te.indexOfTheFirstFailTestCase(nameFolder, nameFile+getIndex(), destinationFolder, outputPackage));
@@ -66,19 +68,37 @@ public class Facade {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
 //		String nameFolder = args[0];
 //		String destinationFolder = args[1];
 //		String outputPackage = args[2];
 //		String priorizationTechinique = args[3];
 //		String nameFile = args[4];
-		
-		String nameFolder = "byClass";
-		String destinationFolder = "byClassoutput";
-		String outputPackage = "byClassoutput";
+			
+
+//		String nameFolder = args[0];
+//		String destinationFolder = args[1];
+//		String outputPackage = args[2];
+//		String priorizationTechinique = args[3];
+//		String nameFile = args[4];
+
+		String nameFolder = "src/byClass";
+		String destinationFolder = "src/byClass/output";
+		String outputPackage = "byClass.output";
 		String priorizationTechinique = "Random";
 		String nameFile = "DOM4JNavigatorTest";
+
 		
 		Facade f = new Facade();
+		f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
+		
+//		f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
+		
+		String nameSuiteClass = "Suite";
+		String testClassesFolder = "src/byClass/output";
+		String targetPackage = "byClass/output";
+		
+		SuiteGenerator s = new SuiteGenerator(testClassesFolder, nameSuiteClass, targetPackage);
 		
 //		Class c;
 //		boolean success;
@@ -103,9 +123,10 @@ public class Facade {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+				
 		
 //		for (int i = 0; i < 2; i++) {
-			f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
+//			f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
 //			f.prioritizationByClass(nameFolder, nameFile, destinationFolder, outputPackage, priorizationTechinique);
 					
 			
@@ -119,7 +140,6 @@ public class Facade {
 //				e.printStackTrace();
 //			}
 		}
-		
 		
 		
 //		JUnitCore juc = new JUnitCore();
