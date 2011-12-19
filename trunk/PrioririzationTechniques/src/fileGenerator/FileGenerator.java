@@ -25,6 +25,7 @@ public class FileGenerator {
 	
 	public static ClassOrInterfaceType superclass;
 	private static CompilationUnit cUnitTarget;
+	private static int index;
 	
 	
 	protected static CompilationUnit createTargetCompUnit(CompilationUnit cUnitSource, String outputPackageName, String nameFile, ArrayList[] elements){
