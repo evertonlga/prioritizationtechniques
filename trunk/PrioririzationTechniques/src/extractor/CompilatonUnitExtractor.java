@@ -73,7 +73,7 @@ public class CompilatonUnitExtractor {
 				// parse the file
 				CompilationUnit currentfile = JavaParser.parse(in);
 				if (currentfile.getTypes().get(0).getName().equals(fileName)){
-					cUnitSource = currentfile;
+					return currentfile;
 				}
 				
 			} catch (ParseException e) {
@@ -88,6 +88,6 @@ public class CompilatonUnitExtractor {
 			}
 			
 		}
-		return cUnitSource;
+		return null;
 	}
 }
